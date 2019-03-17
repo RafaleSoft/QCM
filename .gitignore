@@ -5,6 +5,12 @@ __pycache__/
 
 # C extensions
 *.so
+Debug
+Release
+*.sdf
+*.suo
+
+
 
 # Distribution / packaging
 .Python

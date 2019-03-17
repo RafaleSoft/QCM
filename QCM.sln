@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QCM", "QCM\QCM.vcxproj", "{6BE3BD8B-5622-41FE-B679-DACD44E7D2DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162} = {1ACD7EE1-E1F5-4262-83EA-6C633A57D162}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quirc", "QUIRC\quirc.vcxproj", "{1ACD7EE1-E1F5-4262-83EA-6C633A57D162}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qrtest", "qrtest\qrtest.vcxproj", "{4B0AE35B-1277-45A7-86D9-0B4E96F503FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A} = {4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162} = {1ACD7EE1-E1F5-4262-83EA-6C633A57D162}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qrgen", "qrgen\qrgen.vcxproj", "{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BE3BD8B-5622-41FE-B679-DACD44E7D2DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6BE3BD8B-5622-41FE-B679-DACD44E7D2DA}.Debug|Win32.Build.0 = Debug|Win32
+		{6BE3BD8B-5622-41FE-B679-DACD44E7D2DA}.Release|Win32.ActiveCfg = Release|Win32
+		{6BE3BD8B-5622-41FE-B679-DACD44E7D2DA}.Release|Win32.Build.0 = Release|Win32
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162}.Debug|Win32.Build.0 = Debug|Win32
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162}.Release|Win32.ActiveCfg = Release|Win32
+		{1ACD7EE1-E1F5-4262-83EA-6C633A57D162}.Release|Win32.Build.0 = Release|Win32
+		{4B0AE35B-1277-45A7-86D9-0B4E96F503FC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B0AE35B-1277-45A7-86D9-0B4E96F503FC}.Debug|Win32.Build.0 = Debug|Win32
+		{4B0AE35B-1277-45A7-86D9-0B4E96F503FC}.Release|Win32.ActiveCfg = Release|Win32
+		{4B0AE35B-1277-45A7-86D9-0B4E96F503FC}.Release|Win32.Build.0 = Release|Win32
+		{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}.Debug|Win32.Build.0 = Debug|Win32
+		{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}.Release|Win32.ActiveCfg = Release|Win32
+		{4F8EE3A9-BE51-40A4-8CA5-4E341452BD2A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

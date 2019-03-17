@@ -1,0 +1,5 @@
+include LICENSE
+include qcm/schema.sql
+graft qcm/static
+graft qcm/templates
+global-exclude *.pyc

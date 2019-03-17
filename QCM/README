@@ -1,0 +1,8 @@
+QCM Mathematics
+
+Generation:
+python setup.py bdist_wheel
+
+Installation:
+pip install qcm-<version>-py3-none-any.whl
+

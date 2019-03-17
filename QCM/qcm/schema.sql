@@ -1,0 +1,42 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS classes;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS evaluations;
+DROP TABLE IF EXISTS post;
+
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
+);
+
+CREATE TABLE classes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  teacher_id INTEGER NOT NULL,
+  classname TEXT NOT NULL,
+  FOREIGN KEY (teacher_id) REFERENCES users (id)
+);
+
+CREATE TABLE students (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  class_id INTEGER NOT NULL,
+  firstname TEXT NOT NULL,
+  lastname TEXT NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES classes (id)
+);
+
+CREATE TABLE evaluations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  student_id INTEGER NOT NULL,
+  mark REAL,
+  FOREIGN KEY (student_id) REFERENCES students (id)
+);
+
+CREATE TABLE post (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES users (id)
+);

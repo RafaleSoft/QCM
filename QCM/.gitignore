@@ -1,0 +1,69 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.py[cod]
+__pycache__/
+
+# Temp files #
+##############
+*.bak
+*.swp
+*~
+instance/
+.webassets-cache
+*.log
+local_settings.py
+db.sqlite3
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Distribution / packaging #
+############################
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+# Keep wheels in git to save dependencies when no network connection
+#wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+
+# Environments #
+################
+.env
+.venv
+env/
+# Keep venv in git to save dependencies when no network connection
+#venv/
+ENV/
+env.bak/
+venv.bak/
+.idea/*
+
