@@ -62,7 +62,7 @@ def get_post(post_id, check_author=True):
 
     return post
 
-
+'''
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))
 @login_required
 def update(post_id):
@@ -89,7 +89,7 @@ def update(post_id):
             return redirect(url_for('blog.index'))
 
     return render_template('blog/update.html', post=post)
-
+'''
 
 @bp.route('/<int:post_id>/delete', methods=('POST',))
 @login_required

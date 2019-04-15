@@ -28,9 +28,11 @@ def register():
             error = 'User {} is already registered.'.format(username)
 
         if error is None:
+            firstname = ''
+            lastname = ''
             db.execute(
-                'INSERT INTO users (username, password) VALUES (?, ?)',
-                (username, generate_password_hash(password))
+                'INSERT INTO users (username, password, firstname, lastname) VALUES (?, ?, ?, ?)',
+                (username, generate_password_hash(password), firstname, lastname)
             )
             db.commit()
             return redirect(url_for('auth.login'))

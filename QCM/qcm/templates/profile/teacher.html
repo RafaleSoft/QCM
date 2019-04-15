@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block profile %}
+
+<article class="teacher">
+    <h1>Professeur</h1>
+      <header>
+        <div>
+            <h1>Identité</h1>
+            <p>Prénom: {{ teacher['firstname'] }}</p>
+            <p>Nom: {{ teacher['lastname'] }}</p>
+        </div>
+        <a class="action" href="{{ url_for('profile.update', teacher_id=teacher['id']) }}">Edit</a>
+      </header>
+      <p class="body"></p>
+</article>
+{% endblock %}
