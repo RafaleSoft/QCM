@@ -16,6 +16,7 @@ CREATE TABLE classes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   teacher_id INTEGER NOT NULL,
   classname TEXT NOT NULL,
+  level INTEGER NOT NULL,
   FOREIGN KEY (teacher_id) REFERENCES users (id)
 );
 

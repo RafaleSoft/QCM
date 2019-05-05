@@ -10,7 +10,8 @@ Release/
 *.sdf
 *.suo
 
-
+# PyCharm stuff
+.idea/
 
 # Distribution / packaging
 .Python

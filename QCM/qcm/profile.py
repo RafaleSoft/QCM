@@ -17,7 +17,11 @@ def index():
         'SELECT * FROM users'
         ' WHERE id = ?', (g.user['id'],)
     ).fetchone()
-    return render_template('profile/teacher.html', teacher=teacher)
+    classes = db.execute(
+        'SELECT * FROM classes'
+        ' WHERE teacher_id = ?', (g.user['id'],)
+    ).fetchall()
+    return render_template('profile/teacher.html', teacher=teacher, classes=classes)
 
 
 @bp.route('/<int:teacher_id>/update', methods=('GET', 'POST'))
@@ -46,3 +50,31 @@ def update(teacher_id):
         ' WHERE id = ?', (g.user['id'],)
     ).fetchone()
     return render_template('profile/teacher_update.html', teacher=teacher)
+
+
+@bp.route('/<int:teacher_id>/addClassroom', methods=('GET', 'POST'))
+@login_required
+def addClassroom(teacher_id):
+    if request.method == 'POST':
+        classname = request.form['classname']
+        level = request.form['level']
+        error = None
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO users (teacher_id, classname, level)'
+                ' VALUES (?, ?, ?)',
+                (teacher_id, classname, level)
+            )
+            db.commit()
+            return redirect(url_for('profile.index'))
+
+    db = get_db()
+    teacher = db.execute(
+        'SELECT * FROM users'
+        ' WHERE id = ?', (g.user['id'],)
+    ).fetchone()
+    return render_template('profile/classroom_update.html', teacher=teacher)

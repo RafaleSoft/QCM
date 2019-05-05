@@ -1,21 +1,39 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}Données personnelles{% endblock %}</h1>
+<h1>{% block title %}Profil professeur{% endblock %}</h1>
 {% endblock %}
 
 {% block profile %}
 
 <article class="teacher">
-    <h1>Professeur</h1>
-      <header>
+    <header>
         <div>
             <h1>Identité</h1>
             <p>Prénom: {{ teacher['firstname'] }}</p>
             <p>Nom: {{ teacher['lastname'] }}</p>
         </div>
         <a class="action" href="{{ url_for('profile.update', teacher_id=teacher['id']) }}">Edit</a>
-      </header>
-      <p class="body"></p>
+    </header>
+    <p class="body"></p>
 </article>
+
+<article class="classrooms">
+    <header>
+        <div>
+            <h1>Classes</h1>
+        </div>
+        <a class="action" href="{{ url_for('profile.addClassroom', teacher_id=teacher['id']) }}">Ajouter</a>
+    </header>
+    <div>
+        {% for c in classes %}
+        <div class="class">
+            <header><h1>Niveau1</h1></header>
+            <p>Elève1: {{ teacher['firstname'] }} {{ teacher['lastname']}}</p>
+            <p>Elève1: {{ teacher['firstname'] }} {{ teacher['lastname'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</article>
+
 {% endblock %}

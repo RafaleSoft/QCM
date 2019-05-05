@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Mise à jour des données personnelles{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="classname">Nom de classe</label>
+    <input name="classname" id="classname" value="{{ request.form['classname'] }}" required>
+    <label for="level">Niveau</label>
+    <input name="level" id="level" value="{{ request.form['level'] }}" required>
+    <input type="submit" value="Ajouter">
+</form>
+{% endblock %}
