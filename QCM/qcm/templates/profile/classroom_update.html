@@ -8,8 +8,13 @@
 <form method="post">
     <label for="classname">Nom de classe</label>
     <input name="classname" id="classname" value="{{ request.form['classname'] }}" required>
-    <label for="level">Niveau</label>
-    <input name="level" id="level" value="{{ request.form['level'] }}" required>
-    <input type="submit" value="Ajouter">
+    <label for="6">Sixième</label><input type="radio" name="level" id="6" value="6">
+    <label for="5">Cinquième</label><input type="radio" name="level" id="5" value="5">
+    <label for="4">Quatrième</label><input type="radio" name="level" id="4" value="4">
+    <label for="3">Troisième</label><input type="radio" name="level" id="3" value="3">
+    <label for="2">Seconde</label><input type="radio" name="level" id="2" value="2">
+    <label for="1">Première</label><input type="radio" name="level" id="1" value="1">
+    <label for="0">Terminale</label><input type="radio" name="level" id="0" value="0">
+    <br><input type="submit" value="Ajouter">
 </form>
 {% endblock %}

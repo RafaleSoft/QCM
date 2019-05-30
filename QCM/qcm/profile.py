@@ -65,7 +65,7 @@ def addClassroom(teacher_id):
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO users (teacher_id, classname, level)'
+                'INSERT INTO classes (teacher_id, classname, level)'
                 ' VALUES (?, ?, ?)',
                 (teacher_id, classname, level)
             )
@@ -78,3 +78,15 @@ def addClassroom(teacher_id):
         ' WHERE id = ?', (g.user['id'],)
     ).fetchone()
     return render_template('profile/classroom_update.html', teacher=teacher)
+
+
+@bp.route('/<int:teacher_id>/editClassroom', methods=('GET', 'POST'))
+@login_required
+def editClassroom(teacher_id):
+    db = get_db()
+    teacher = db.execute(
+        'SELECT * FROM users'
+        ' WHERE id = ?', (g.user['id'],)
+    ).fetchone()
+    return render_template('profile/classroom_update.html', teacher=teacher)
+

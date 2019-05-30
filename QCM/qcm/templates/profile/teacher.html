@@ -13,7 +13,7 @@
             <p>Prénom: {{ teacher['firstname'] }}</p>
             <p>Nom: {{ teacher['lastname'] }}</p>
         </div>
-        <a class="action" href="{{ url_for('profile.update', teacher_id=teacher['id']) }}">Edit</a>
+        <a class="action" href="{{ url_for('profile.update', teacher_id=teacher['id']) }}">Editer</a>
     </header>
     <p class="body"></p>
 </article>
@@ -28,9 +28,10 @@
     <div>
         {% for c in classes %}
         <div class="class">
-            <header><h1>Niveau1</h1></header>
+            <header><h1>{{ c['classname'] }} - {{ c['level'] }}</h1></header>
             <p>Elève1: {{ teacher['firstname'] }} {{ teacher['lastname']}}</p>
             <p>Elève1: {{ teacher['firstname'] }} {{ teacher['lastname'] }}</p>
+            <a class="action" href="{{ url_for('profile.editClassroom', teacher_id=teacher['id']) }}">Modifier</a>
         </div>
         {% endfor %}
     </div>
