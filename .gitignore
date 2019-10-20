@@ -96,6 +96,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+ipch/
+Raptor/
 
 # Spyder project settings
 .spyderproject
