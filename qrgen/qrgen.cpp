@@ -6,13 +6,6 @@
 #include "QR-Code-generator\c\qrcodegen.h"
 
 
-// This is the constructor of a class that has been exported.
-// see qrgen.h for the class definition
-//Cqrgen::Cqrgen()
-//{
-//	return;
-//}
-
 QRGEN_API bool qrgen_getModule(const unsigned char qrcode[], int x, int y)
 {
 	return qrcodegen_getModule(qrcode, x, y);

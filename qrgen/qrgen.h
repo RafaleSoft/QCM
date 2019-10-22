@@ -10,12 +10,6 @@
 #define QRGEN_API __declspec(dllimport)
 #endif
 
-// This class is exported from the qrgen.dll
-//class QRGEN_API Cqrgen {
-//public:
-//	Cqrgen(void);
-//};
-
 
 #ifdef __cplusplus
 extern "C" 

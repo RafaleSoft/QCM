@@ -76,24 +76,34 @@ void writepng_version_info(void)
     ZLIB_VERSION, zlib_version);
 }
 
+FILE *io = NULL;
+png_write_data(png_structp png_ptr, png_bytep data, size_t length)
+{
+	size_t check;
+
+	if (png_ptr == NULL)
+		return;
+
+	check = fwrite(data, 1, length, io);
+
+	if (check != length)
+		png_error(png_ptr, "Write Error");
+}
 
 /* returns 0 for success, 2 for libpng problem, 4 for out of memory, 11 for
  *  unexpected pnmtype; note that outfile might be stdout */
 
 int writepng_init(mainprog_info *mainprog_ptr)
 {
-    png_structp  png_ptr;       /* note:  temporary variables! */
-    png_infop  info_ptr;
     int color_type, interlace_type;
-
 
     /* could also replace libpng warning-handler (final NULL), but no need: */
 
-    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, mainprog_ptr, writepng_error_handler, NULL);
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, mainprog_ptr, writepng_error_handler, NULL);
     if (!png_ptr)
         return 4;   /* out of memory */
 
-    info_ptr = png_create_info_struct(png_ptr);
+	png_infop info_ptr = png_create_info_struct(png_ptr);
     if (!info_ptr)
 	{
         png_destroy_write_struct(&png_ptr, NULL);
@@ -117,6 +127,8 @@ int writepng_init(mainprog_info *mainprog_ptr)
 
     png_init_io(png_ptr, mainprog_ptr->outfile);
 
+	//io = mainprog_ptr->outfile;
+	//png_set_write_fn(png_ptr, mainprog_ptr->outfile, png_write_data, NULL);
 
     /* set the compression levels--in general, always want to leave filtering
      * turned on (except for palette images) and allow all of the filters,
@@ -391,3 +403,7 @@ static void writepng_error_handler(png_structp png_ptr, png_const_charp msg)
 
     longjmp(mainprog_ptr->jmpbuf, 1);
 }
+
+
+
+

@@ -29,6 +29,7 @@
 #include <quirc_api.h>
 #include <QR-Code-generator/c/qrcodegen.h>
 #include <qrgen.h>
+#include <scan.h>
 extern "C"
 {
 	#include "writepng.h"
