@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} {{ topic['title'] }} {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label>{{ topic['object'] }}</label>
+    <input type="submit" value="Supprimer">
+  </form>
+  <hr>
+  <form action="{{ url_for('profile.index', student_id=topic['id']) }}" method="post">
+    <input type="submit" value="Annuler">
+  </form>
+{% endblock %}

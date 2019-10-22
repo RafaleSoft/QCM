@@ -1,13 +1,13 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
-from werkzeug.exceptions import abort
 
 from qcm.auth import login_required
 from qcm.db import get_db
 
 bp = Blueprint('profile', __name__)
 
+niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
 
 @bp.route('/profile')
 @login_required
@@ -17,10 +17,22 @@ def index():
         'SELECT * FROM users'
         ' WHERE id = ?', (g.user['id'],)
     ).fetchone()
-    classes = db.execute(
+    cls = db.execute(
         'SELECT * FROM classes'
         ' WHERE teacher_id = ?', (g.user['id'],)
     ).fetchall()
+    classes = []
+    for c in cls:
+        classe = {}
+        classe['id'] = c['id']
+        classe['classname'] = c['classname']
+        classe['level'] = niveaux[c['level']]
+        els = db.execute(
+            'SELECT * FROM students'
+            ' WHERE class_id = ?', (c['id'],)
+        ).fetchall()
+        classe['eleves'] = els
+        classes.append(classe)
     return render_template('profile/teacher.html', teacher=teacher, classes=classes)
 
 
@@ -31,6 +43,11 @@ def update(teacher_id):
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         error = None
+
+        if not firstname:
+            error = 'Firstname is required.'
+        if not lastname:
+            error = 'Lastname is required.'
 
         if error is not None:
             flash(error)
@@ -77,16 +94,111 @@ def addClassroom(teacher_id):
         'SELECT * FROM users'
         ' WHERE id = ?', (g.user['id'],)
     ).fetchone()
-    return render_template('profile/classroom_update.html', teacher=teacher)
+    return render_template('profile/classroom_add.html', teacher=teacher)
 
 
-@bp.route('/<int:teacher_id>/editClassroom', methods=('GET', 'POST'))
+@bp.route('/<int:class_id>/classroomUpdate', methods=('GET', 'POST'))
 @login_required
-def editClassroom(teacher_id):
-    db = get_db()
-    teacher = db.execute(
-        'SELECT * FROM users'
-        ' WHERE id = ?', (g.user['id'],)
-    ).fetchone()
-    return render_template('profile/classroom_update.html', teacher=teacher)
+def classroomUpdate(class_id):
+    if request.method == 'POST':
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        error = None
 
+        if not firstname:
+            error = 'Firstname is required.'
+        if not lastname:
+            error = 'Lastname is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO students (class_id, firstname, lastname)'
+                ' VALUES (?, ?, ?)',
+                (class_id, firstname, lastname)
+            )
+            db.commit()
+            return redirect(url_for('profile.index'))
+
+    db = get_db()
+    classe = db.execute(
+        'SELECT * FROM classes'
+        ' WHERE id = ?', (class_id,)
+    ).fetchone()
+    return render_template('profile/classroom_update.html', classe=classe)
+
+
+@bp.route('/<int:student_id>/editStudent', methods=('GET', 'POST'))
+@login_required
+def editStudent(student_id):
+    if request.method == 'POST':
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        error = None
+
+        if not firstname:
+            error = 'Firstname is required.'
+        if not lastname:
+            error = 'Lastname is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'DELETE FROM students '
+                ' WHERE id = ?', (student_id,)
+            )
+            db.commit()
+            return redirect(url_for('profile.index'))
+
+    db = get_db()
+    eleve = db.execute(
+        'SELECT * FROM students'
+        ' WHERE id = ?', (student_id,)
+    ).fetchone()
+    return render_template('profile/edit.html', eleve=eleve)
+
+
+@bp.route('/<int:student_id>/deleteStudent', methods=('GET', 'POST'))
+@login_required
+def deleteStudent(student_id):
+    if request.method == 'POST':
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        error = None
+
+        if not firstname:
+            error = 'Firstname is required.'
+        if not lastname:
+            error = 'Lastname is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'DELETE FROM students '
+                ' WHERE id = ?', (student_id,)
+            )
+            db.commit()
+            return redirect(url_for('profile.index'))
+
+    topic = {}
+    topic['title'] = 'Supprimer l\'élève:'
+    db = get_db()
+    eleve = db.execute(
+        'SELECT * FROM students'
+        ' WHERE id = ?', (student_id,)
+    ).fetchone()
+    topic['object'] = eleve['firstname'] + ' ' + eleve['lastname']
+    topic['id'] = student_id
+    return render_template('profile/delete.html', topic=topic)
+
+
+@bp.route('/<int:class_id>/deleteClassroom', methods=('GET', 'POST'))
+@login_required
+def deleteClassroom(class_id):
+    return redirect(url_for('profile.index'))
