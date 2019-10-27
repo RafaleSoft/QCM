@@ -14,4 +14,6 @@
 SCAN_API bool open_scan(const char* scan);
 
 SCAN_API bool close_scan();
-		
+
+SCAN_API bool extract_scan_fills(size_t num_lines);
+

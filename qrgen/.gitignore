@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 Thumbs.db
-QR-Code-generator/
 
 
 # Build results

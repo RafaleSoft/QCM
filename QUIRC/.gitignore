@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 Thumbs.db
-quirc/
 
 
 # Build results

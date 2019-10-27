@@ -25,6 +25,8 @@ const float NUM_Y_END = 10.30f;
 const float NUM_X_START = 21.89f;
 const float NUM_X_END = 24.41f;
 
+const size_t NUM_COLUMNS = 5;
+
 
 bool normalize(CImage &in, const std::string &out)
 {
@@ -227,6 +229,86 @@ SCAN_API bool open_scan(const char* scan)
 			return false;
 		else if (!extractnum(image, "num.tiff"))
 			return false;
+		else
+			return true;
+	}
+	else
+		return false;
+}
+
+SCAN_API bool extract_scan_fills(size_t num_lines)
+{
+	if (0 == num_lines)
+		return false;
+
+	CImage::IImageOP::operation_param_t param;
+	CVaArray<CImage::IImageOP::OP_KIND> iops;
+
+	CImage image;
+	if (image.loadImage("table.tga", iops, param))
+	{
+		uint8_t *pixels = image.getPixels();
+		if (NULL != pixels)
+		{
+			size_t w = image.getWidth();
+			size_t h = image.getHeight();
+
+			// Loop for every line
+			for (size_t l = 0; l < num_lines; l++)
+			{
+				size_t answer = 0;
+
+				//	Image is upside down.
+				size_t y_start = h - (size_t)((l + 1) * h / num_lines);
+				size_t y_end = h - (size_t)((l + 0) * h / num_lines);
+
+				// loop for every cell in line
+				for (size_t c = 0; c < NUM_COLUMNS; c++)
+				{
+					size_t x_start = (size_t)((c + 0) * w / NUM_COLUMNS);
+					size_t x_end = (size_t)((c + 1) * w / NUM_COLUMNS);
+
+					size_t num_pixels = 1;
+					size_t value = 0;
+					for (size_t v = y_start; v < y_end; v++)
+					{
+						for (size_t o = (w * v + x_start) * 4; o < (w * v + x_end) * 4; o += 4, num_pixels++)
+						{
+							uint8_t r = pixels[o];
+							uint8_t g = pixels[o + 1];
+							uint8_t b = pixels[o + 2];
+
+							if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
+								;
+							else
+								value++;
+						}
+					}
+
+					bool is_filled = (value > (num_pixels / 2));
+					if (is_filled)
+					{
+						if (answer > 0)
+						{
+							std::cout << "Questionnaire incorrect: plusieurs reponses donnees à la ligne " << l << std::endl;
+							answer = 0;
+							break;
+						}
+						else
+							answer = c + 1;
+					}
+					else
+						;	// answer not modified.
+
+					//std::cout << "Question n." << l << " reponse n." << c << ": " << (is_filled ? "X" : " ") << std::endl;
+				}
+
+				std::cout << "Question n." << l << " reponse: " << 
+					(answer == 5 ? "e" : (answer == 4 ? "d" : (answer == 3 ? "c" : (answer == 2 ? "b" : (answer == 1 ? "a" : ""))))) << std::endl;
+			}
+
+			return true;
+		}
 		else
 			return true;
 	}
