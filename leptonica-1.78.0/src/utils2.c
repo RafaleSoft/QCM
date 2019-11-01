@@ -191,9 +191,11 @@
 #include <fcntl.h>     /* _O_CREAT, ... */
 #include <io.h>        /* _open */
 #include <sys/stat.h>  /* _S_IREAD, _S_IWRITE */
+#define GETCWD _getcwd
 #else
 #include <sys/stat.h>  /* for stat, mkdir(2) */
 #include <sys/types.h>
+#define GETCWD getcwd
 #endif
 
 #include <string.h>
@@ -3049,7 +3051,7 @@ l_int32  dirlen, namelen, size;
 
         /* Handle the case where we start from the current directory */
     if (!dir || dir[0] == '\0') {
-        if ((cdir = _getcwd(NULL, 0)) == NULL)
+        if ((cdir = GETCWD(NULL, 0)) == NULL)
             return (char *)ERROR_PTR("no current dir found", procName, NULL);
     } else {
         cdir = stringNew(dir);

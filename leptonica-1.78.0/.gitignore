@@ -21,6 +21,8 @@ bld/
 .libs/
 prog/*.o
 src/*.o
+src/*.lo
+src/*.la
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
