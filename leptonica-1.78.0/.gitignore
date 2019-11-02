@@ -23,6 +23,11 @@ prog/*.o
 src/*.o
 src/*.lo
 src/*.la
+Makefile
+libtool
+config.status
+config_auto.h
+lept.pc
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
