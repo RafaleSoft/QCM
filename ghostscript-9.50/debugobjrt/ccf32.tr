@@ -1,0 +1,1 @@
+/DDEBUG /Od /Fd.\debugobjrt\ /Zi /Fp.\debugobjrt\gs.pch -W2 /wd4996 /wd4224 /nologo /MTd -DCHECK_INTERRUPTS -D_Windows -D__WIN32__ 

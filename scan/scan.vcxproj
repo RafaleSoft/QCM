@@ -100,6 +100,8 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="scan.cpp" />
+    <ClCompile Include="scan_jpg.cpp" />
+    <ClCompile Include="scan_pdf.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

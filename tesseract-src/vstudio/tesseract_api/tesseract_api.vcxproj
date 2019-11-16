@@ -63,9 +63,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PACKAGE_VERSION="5.0.0";_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\classify;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\wordrec;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\textord;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\ccmain</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\classify;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\wordrec;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\textord;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\ccmain</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -10,6 +10,19 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	init_scan();
+
+	/*	Test PDF Scan	*/
+	//open_doc("Scan.pdf");
+	if (1 == rectify_scan("scan_p1.jpg"))
+		std::cout << "Scan data extracted." << std::endl;
+	else
+		std::cout << "Erreur d'extraction de scan" << std::endl;
+
+	//close_doc();
+
+
+	/*	Test JPEG Scan
 	std::ofstream correction("S.txt");
 	
 	for (size_t i = 1; i <= 35; i++)
@@ -17,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::stringstream fname;
 		fname << "S" << std::setfill('0') << std::setw(2) << i << ".jpg" << std::ends;
 
-		if (!open_scan(fname.str().c_str()))
+		if (1 == open_scan(fname.str().c_str()))
 		{
 			std::ios state(nullptr);
 			state.copyfmt(correction);
@@ -34,7 +47,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			scan.num_answers = 20;
 			scan.answers = new QCM_Answer[20];
 
-			if (get_scan_answers(&scan))
+			if (1 == get_scan_answers(&scan))
 			{
 				std::ios state(nullptr);
 				state.copyfmt(correction);
@@ -57,6 +70,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	correction.close();
 
 	close_scan();
+	*/
+
+	release_scan();
 
 	return 0;
 }

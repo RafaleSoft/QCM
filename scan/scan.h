@@ -6,9 +6,9 @@
 // defined with this macro as being exported.
 
 #ifdef SCAN_EXPORTS
-#define SCAN_API __declspec(dllexport)
+	#define SCAN_API __declspec(dllexport)
 #else
-#define SCAN_API __declspec(dllimport)
+	#define SCAN_API __declspec(dllimport)
 #endif
 
 #include <stdint.h>
@@ -16,12 +16,31 @@
 
 #define  DEFAULT_NUM_COLUMNS 5
 
+//	Initialize the scan library
+SCAN_API int init_scan(void);
 
-SCAN_API bool open_scan(const char* scan);
+//	Quit the scan library
+SCAN_API int release_scan(void);
 
-SCAN_API bool close_scan();
 
-SCAN_API bool extract_scan_fills(size_t num_lines, size_t num_columns = DEFAULT_NUM_COLUMNS);
+//	Open a jpg image scan of a single QCM
+SCAN_API int open_scan(const char* scan);
+
+//	Releases all the resources allocated by open_scan calls.
+SCAN_API int close_scan();
+
+//	Extract QCM answers from current (last) opened scan.
+SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns);
+
+//	Open a pdf document with multiple QCM scans (1 per page)
+SCAN_API int open_doc(const char* doc);
+
+//	Orthorectify the current opened scan
+SCAN_API int rectify_scan(const char* scan);
+
+//	Releases all the resources allocated by open_doc calls.
+SCAN_API int close_doc();
+
 
 
 typedef struct QCM_Answer_t
@@ -37,4 +56,4 @@ typedef struct SCAN_t
 	QCM_Answer	*answers;
 } SCAN;
 
-SCAN_API bool get_scan_answers(const SCAN* scan);
+SCAN_API int get_scan_answers(const SCAN* scan);
