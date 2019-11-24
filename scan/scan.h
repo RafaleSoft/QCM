@@ -22,7 +22,6 @@ SCAN_API int init_scan(void);
 //	Quit the scan library
 SCAN_API int release_scan(void);
 
-
 //	Open a jpg image scan of a single QCM
 SCAN_API int open_scan(const char* scan);
 
@@ -37,6 +36,9 @@ SCAN_API int open_doc(const char* doc);
 
 //	Orthorectify the current opened scan
 SCAN_API int rectify_scan(const char* scan);
+
+//	Resize the current opened scan
+SCAN_API int resize_scan(const char* scan, size_t newW, size_t newH);
 
 //	Releases all the resources allocated by open_doc calls.
 SCAN_API int close_doc();
