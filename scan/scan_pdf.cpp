@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "process.h"
 #include <math.h>
 #include "scan.h"
 
@@ -14,7 +13,13 @@
 #include "System/Image.h"
 
 //	Global data
-extern std::vector<SCAN> global_scans;
+extern std::vector<SCAN>	global_scans;
+extern CImage				*current_scan;
+
+
+const size_t RECTIFY_WIDTH = 1700;
+const size_t RECTIFY_HEIGHT = 2338;
+
 const uint8_t TRESH_HIGH = 192;
 const uint8_t TRESH = 128;
 const uint8_t TRESH_LOW = 64;
@@ -22,70 +27,165 @@ const uint8_t TRESH_LOW = 64;
 //	Margins for document data to skip artefacts on page borders.
 const size_t MARGIN_LEFT = 30;
 const size_t MARGIN_RIGHT = 30;
-const size_t MARGIN_TOP = 1700;
+const size_t MARGIN_TOP = 30;
 const size_t MARGIN_BOTTOM = 30;
+const size_t TABLE_TOP_LIMIT = 500;	// distance from top of page
 
 //	Line threshold to identify a line
 const float LINE_THRESHOLD = 3.5f;
 
+//	Scan number location
+const size_t NUM_X_START = 365;
+const size_t NUM_X_END = 410;
+const size_t NUM_Y_START = 185;
+const size_t NUM_Y_END = 220;
+
+//	Result table location
+const size_t TABLE_Y_START = 275;
+const size_t TABLE_Y_END = 2060;
+const size_t TABLE_STRIPE_WIDTH = 60;
+const size_t TABLE_X_START[DEFAULT_NUM_COLUMNS] = { 200, 476, 751, 1026, 1301 };
+const size_t TABLE_X_END[DEFAULT_NUM_COLUMNS] = { 260, 536, 811, 1086, 1361 };
+
 //	Identification lines
-const float CORNER1_X = 86.0f / 1700.0f;
+const int CORNER_X = 86;
+
 const float CORNER1_YMIN = (133.0f - 10.0f) / 2338.0f;
 const float CORNER1_Y = 133.0f / 2338.0f;
 const float CORNER1_YMAX = (133.0f + 10.0f) / 2338.0f;
+
 const float CORNER2_YMIN = (190.0f - 10.0f) / 2338.0f;
 const float CORNER2_Y = 190.0f / 2338.0f;
 const float CORNER2_YMAX = (190.0f + 10.0f) / 2338.0f;
-const float CORNER3_YMIN = (260.0f - 10.0f) / 2338.0f;
-const float CORNER3_Y = 260.0f / 2338.0f;
-const float CORNER3_YMAX = (260.0f + 10.0f) / 2338.0f;
 
-static CImage *current_scan = NULL;
+const int CORNER3_YMIN = 205;
+const int CORNER3_Y = 231;
+const int CORNER3_YMAX = 256;
 
 
-SCAN_API int open_doc(const char* doc)
+
+bool extractnum(CImage &in, const std::string &out)
 {
-	if (NULL == doc)
+	uint8_t *pixels = in.getPixels();
+	if (NULL != pixels)
+	{
+		size_t w = in.getWidth();
+		size_t h = in.getHeight();
+
+		//	Image is upside down.
+		size_t y_end = h - NUM_Y_START;
+		size_t y_start = h - NUM_Y_END;
+		size_t width = (NUM_X_END - NUM_X_START);
+
+		uint8_t *table = new uint8_t[width * (y_end - y_start)];
+		memset(table, 0, width * (y_end - y_start));
+
+		for (size_t v = y_start, j = 0; v < y_end; v++)
+		{
+			for (size_t o = (w * v + NUM_X_START) * 4; o < (w * v + NUM_X_END) * 4; o += 4, j++)
+			{
+				uint8_t r = pixels[o];
+				uint8_t g = pixels[o + 1];
+				uint8_t b = pixels[o + 2];
+
+				uint8_t &n = table[j];
+
+				if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
+					n = 255;
+				else
+					n = 0;
+			}
+		}
+
+		CImage tmp;
+		tmp.allocatePixels(width, (y_end - y_start));
+		uint8_t *pixels2 = tmp.getPixels();
+		if (NULL != pixels2)
+		{
+			for (size_t i = 0, j = 0; j < width * (y_end - y_start); i += 4, j++)
+			{
+				uint8_t n = table[j];
+
+				pixels2[i] = n;
+				pixels2[i + 1] = n;
+				pixels2[i + 2] = n;
+				pixels2[i + 3] = 255;
+			}
+		}
+
+		CImage::IImageIO *io = in.getImageKindIO("tiff");
+		io->storeImageFile(out, &tmp);
+
+		delete[] table;
+
+		return true;
+	}
+	else
 		return false;
-
-	stringstream cmd;
-	cmd << "F:\\QCM\\ghostscript\\gswin32c.exe -dNOPAUSE -dBATCH -sDEVICE=jpeg -sOutputFile=scan_p%d.jpg -r300x300 ";
-	cmd << doc;
-	cmd << std::ends;
-	int ex = system(cmd.str().c_str());
-
-	return ex;
 }
 
-SCAN_API int close_doc()
+bool extracttable(CImage &in, const std::string &out)
 {
-	for (size_t i = 0; i < global_scans.size(); i++)
+	uint8_t *pixels = in.getPixels();
+	if (NULL != pixels)
 	{
-		SCAN& g_scan = global_scans[i];
-		if (g_scan.answers != NULL)
-			delete[] g_scan.answers;
+		size_t w = in.getWidth();
+		size_t h = in.getHeight();
+
+		//	Image is upside down.
+		size_t y_end = h - TABLE_Y_START;
+		size_t y_start = h - TABLE_Y_END;
+		size_t width = DEFAULT_NUM_COLUMNS * TABLE_STRIPE_WIDTH;
+
+		uint8_t *table = new uint8_t[width * (y_end - y_start)];
+		memset(table, 0, width*(y_end - y_start));
+
+		for (size_t c = 0; c < DEFAULT_NUM_COLUMNS; c++)
+		{
+			for (size_t v = y_start, j=0; v < y_end; v++, j++)
+			{
+				for (size_t o = (w * v + TABLE_X_START[c]) * 4, k=0; o < (w * v + TABLE_X_END[c]) * 4; o += 4, k++)
+				{
+					uint8_t r = pixels[o];
+					uint8_t g = pixels[o + 1];
+					uint8_t b = pixels[o + 2];
+
+					uint8_t &n = table[(j*DEFAULT_NUM_COLUMNS + c) * TABLE_STRIPE_WIDTH + k];
+
+					if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
+						n = 255;
+					else
+						n = 0;
+				}
+			}
+		}
+
+		CImage tmp;
+		tmp.allocatePixels(width, (y_end - y_start));
+		uint8_t *pixels2 = tmp.getPixels();
+		if (NULL != pixels2)
+		{
+			for (size_t i = 0, j = 0; j < width * (y_end - y_start); i += 4, j++)
+			{
+				uint8_t n = table[j];
+
+				pixels2[i] = n;
+				pixels2[i + 1] = n;
+				pixels2[i + 2] = n;
+				pixels2[i + 3] = 255;
+			}
+		}
+
+		CImage::IImageIO *io = in.getImageKindIO("tga");
+		io->storeImageFile(out, &tmp);
+
+		delete[] table;
+
+		return true;
 	}
-
-	if (NULL != current_scan)
-		delete current_scan;
-
-	global_scans.clear();
-
-	int num_scan = 1;
-	int rt = 0;
-	while (0 == rt)
-	{
-		stringstream doc;
-		doc << "scan_p" << num_scan++ << ".jpg" << ends;
-		rt = rt | _unlink(doc.str().c_str());
-	}
-
-	rt = rt | _unlink("rectified.jpg");
-	rt = rt | _unlink("resized.jpg");
-
-	return (0 == rt);
+	else
+		return false;
 }
-
 
 
 /*
@@ -267,8 +367,8 @@ SCAN_API int resize_scan(CImage& image, size_t newW, size_t newH)
 			}
 		}
 
-		//CImage::IImageIO *io = current_scan->getImageKindIO("jpg");
-		//io->storeImageFile("resized.jpg", current_scan);
+		//CImage::IImageIO *io = current_scan->getImageKindIO("tga");
+		//io->storeImageFile("resized.tga", current_scan);
 
 		return 1;
 	}
@@ -276,6 +376,9 @@ SCAN_API int resize_scan(CImage& image, size_t newW, size_t newH)
 		return 0;
 }
 
+//	Image is upside down:
+//	- ty > 0 ==> translate image down
+//	- tx > 0 ==> translate image right
 int translate_scan(int tx, int ty)
 {
 	if (NULL != current_scan)
@@ -339,7 +442,7 @@ bool findLeftTopCorner(CImage& in, int &x, int &y)
 
 		for (size_t j = MARGIN_LEFT; j < w - MARGIN_RIGHT; j++)
 		{
-			for (size_t i = MARGIN_TOP; i < h - MARGIN_BOTTOM; i++)
+			for (size_t i = h - TABLE_TOP_LIMIT; i < h - MARGIN_TOP; i++)
 			{
 				int offset = ((i * w) + j) * 4;
 
@@ -542,36 +645,40 @@ int rotate(CImage &in, CImage &out, float angle, float centerx, float centery)
 					float facty = (dY - J);
 
 					int offset_src = (((h - J - 1) * w) + I) * 4;
-					r += (1 - factx) * (1 - facty) * pixels[offset_src];
-					g += (1 - factx) * (1 - facty) * pixels[offset_src + 1];
-					b += (1 - factx) * (1 - facty) * pixels[offset_src + 2];
-					a += (1 - factx) * (1 - facty) * pixels[offset_src + 3];
+					float fxy = (1 - factx) * (1 - facty);
+					r += fxy * pixels[offset_src];
+					g += fxy * pixels[offset_src + 1];
+					b += fxy * pixels[offset_src + 2];
+					a += fxy * pixels[offset_src + 3];
 
 					if (I < w - 1)
 					{
 						offset_src = (((h - J - 1) * w) + I + 1) * 4;
-						r += factx * (1 - facty) * pixels[offset_src];
-						g += factx * (1 - facty) * pixels[offset_src + 1];
-						b += factx * (1 - facty) * pixels[offset_src + 2];
-						a += factx * (1 - facty) * pixels[offset_src + 3];
+						fxy = factx * (1 - facty);
+						r += fxy * pixels[offset_src];
+						g += fxy * pixels[offset_src + 1];
+						b += fxy * pixels[offset_src + 2];
+						a += fxy * pixels[offset_src + 3];
 					}
 
 					if (J < h - 1)
 					{
 						offset_src = ((((h - J - 1) - 1) * w) + I) * 4;
-						r += (1 - factx) * facty * pixels[offset_src];
-						g += (1 - factx) * facty * pixels[offset_src + 1];
-						b += (1 - factx) * facty * pixels[offset_src + 2];
-						a += (1 - factx) * facty * pixels[offset_src + 3];
+						fxy = (1 - factx) * facty;
+						r += fxy * pixels[offset_src];
+						g += fxy * pixels[offset_src + 1];
+						b += fxy * pixels[offset_src + 2];
+						a += fxy * pixels[offset_src + 3];
 					}
 
 					if ((J < h - 1) && (I < w - 1))
 					{
 						offset_src = ((((h - J - 1) - 1) * w) + I + 1) * 4;
-						r += factx * facty * pixels[offset_src];
-						g += factx * facty * pixels[offset_src + 1];
-						b += factx * facty * pixels[offset_src + 2];
-						a += factx * facty * pixels[offset_src + 3];
+						fxy = factx * facty;
+						r += fxy * pixels[offset_src];
+						g += fxy * pixels[offset_src + 1];
+						b += fxy * pixels[offset_src + 2];
+						a += fxy * pixels[offset_src + 3];
 					}
 
 					int offset_dst = (i + (w * (h - j - 1))) * 4;	// image is upside down
@@ -598,16 +705,16 @@ int histogram_scan(size_t px, size_t py, size_t width, size_t height)
 		uint8_t *pixels = current_scan->getPixels();
 
 		CImage normalized;
-		normalized.allocatePixels(1700, 2338);
+		normalized.allocatePixels(RECTIFY_WIDTH, RECTIFY_HEIGHT);
 		uint8_t *dst = normalized.getPixels();
-		memset(dst, 255, 1700 * 2338 * 4);
+		memset(dst, 255, RECTIFY_WIDTH * RECTIFY_HEIGHT * 4);
 
 		for (size_t j = py; j < height; j++)
 		{
 			for (size_t i = px; i < width; i++)
 			{
 				int offset_src = (((h - j - 1) * w) + i) * 4;
-				int offset_dst = (((2338 - j - 1) * 1700) + i) * 4;
+				int offset_dst = (((RECTIFY_HEIGHT - j - 1) * RECTIFY_WIDTH) + i) * 4;
 
 				uint8_t r = 255;
 				uint8_t g = 255;
@@ -622,7 +729,7 @@ int histogram_scan(size_t px, size_t py, size_t width, size_t height)
 					//a = pixels[offset_src + 3];
 				}
 
-				if ((offset_dst > 0) && (offset_dst < 1700 * 2338 * 4))
+				if ((offset_dst > 0) && (offset_dst < RECTIFY_WIDTH * RECTIFY_HEIGHT * 4))
 				{
 					r = (r > 230 ? 255 : r);
 					g = (g > 230 ? 255 : g);
@@ -676,12 +783,12 @@ SCAN_API int rectify_scan(const char* scan)
 				if (y2 > y)
 				{
 					float angle = atan2((float)(y2 - y), (float)(x2 - x));
-					rectify = rotate(image, result, - angle, 0, 0);
+					rectify = rotate(image, result, -angle, 0, 0);
 				}
 				else
 				{
 					float angle = atan2((float)(y2 - y), (float)(x2 - x));
-					rectify = rotate(image, result, angle, 0, 0);
+					rectify = rotate(image, result, -angle, 0, 0);
 				}
 
 				if (1 == rectify)
@@ -695,22 +802,23 @@ SCAN_API int rectify_scan(const char* scan)
 				{
 					int ty = 0;
 					int tx = 0;
+					int dx = (floor)(fact * x);
+					int dy = (floor)(fact * (image.getHeight() - y));
 
-					float dy = (float)(image.getHeight() - y) / (float)image.getHeight();
 					if ((dy > CORNER1_YMIN) && (dy < CORNER1_YMAX))
 					{
-						tx = 6 + floor(0.5f + CORNER1_X * (float)current_scan->getWidth() - fact * x);
+						tx = 6 + floor(0.5f + CORNER_X * (float)current_scan->getWidth() - fact * x);
 						ty = 3 + floor(0.5f + CORNER1_Y * (float)current_scan->getHeight() - fact * (float)(image.getHeight() - y));
 					}
 					else if ((dy > CORNER2_YMIN) && (dy < CORNER2_YMAX))
 					{
-						tx = 7 + floor(0.5f + CORNER1_X * (float)current_scan->getWidth() - fact * x);
+						tx = 7 + floor(0.5f + CORNER_X * (float)current_scan->getWidth() - fact * x);
 						ty = 4 + floor(0.5f + CORNER2_Y * (float)current_scan->getHeight() - fact * (float)(image.getHeight() - y));
 					}
 					else if ((dy > CORNER3_YMIN) && (dy < CORNER3_YMAX))
 					{
-						tx = 8 + floor(0.5f + CORNER1_X * (float)current_scan->getWidth() - fact * x);
-						ty = 7 + floor(0.5f + CORNER3_Y * (float)current_scan->getHeight() - fact * (float)(image.getHeight() - y));
+						tx = CORNER_X - dx;
+						ty = CORNER3_Y - dy;
 					}
 					else
 					{
@@ -726,7 +834,10 @@ SCAN_API int rectify_scan(const char* scan)
 
 				if (1 == rectify)
 				{
-					rectify = histogram_scan(20, 20, 1500, 2200);
+					rectify = histogram_scan(MARGIN_LEFT, 
+											 MARGIN_TOP, 
+											 current_scan->getWidth() - MARGIN_RIGHT,
+											 current_scan->getHeight() - MARGIN_BOTTOM);
 					if (0 == rectify)
 						std::cout << "Erreur de normalisation de scan" << std::endl;
 				}

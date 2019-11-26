@@ -13,11 +13,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	init_scan();
 
 	/*	Test PDF Scan	*/
-	//open_doc("403copies.pdf");
+	//open_doc("407Copies.pdf");
 
 	std::ofstream correction("S.txt");
 
-	for (size_t i = 8; i <= 35; i++)
+	for (size_t i = 2; i <= 2; i++)
 	{
 		std::stringstream fname;
 		fname << "scan_p" << i << ".jpg" << std::ends;
@@ -33,7 +33,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			std::cout << "Erreur de rectification du scan " << fname.str() << std::endl;
 	}
 
-	for (size_t i = 1; i <= 35; i++)
+	for (size_t i = 7; i <= 7; i++)
 	{
 		//	Export scan in correction file
 		SCAN scan;
@@ -68,8 +68,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	correction.close();
-
-	close_scan();
 
 	//close_doc();
 
@@ -124,7 +122,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	close_scan();
 	*/
 
-	//release_scan();
+	release_scan();
 
 	return 0;
 }

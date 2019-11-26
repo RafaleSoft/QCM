@@ -24,12 +24,12 @@ extern std::vector<SCAN> global_scans;
 //	Full table extraction normaliser threshold (below: black, above: white)
 const uint8_t TRESH = 210; // 192;
 //	Table cell filled ratio: above 1/FILL, cell is filled, empty otherwise
-const uint8_t FILL = 4;
+const uint8_t FILL = 9;
 
-const float TABLE_Y_START = 13.48f;
-const float TABLE_Y_END = 45.48f;
-const float TABLE_X_START = 12.94f;
-const float TABLE_X_END = 26.41f;
+const float TABLE_Y_START = 13.17f;
+const float TABLE_Y_END = 45.20f;
+const float TABLE_X_START = 13.35f;
+const float TABLE_X_END = 26.70f;
 
 const float NUM_Y_START = 8.95f;
 const float NUM_Y_END = 10.30f;
@@ -39,7 +39,60 @@ const float NUM_X_END = 24.45f;
 const size_t NUM_COLUMNS = 5;
 
 
+bool normalize(CImage &in, const std::string &out)
+{
+	uint8_t *pixels = in.getPixels();
+	if (NULL != pixels)
+	{
+		size_t w = in.getWidth();
+		size_t h = in.getHeight();
 
+		uint8_t *normalized = new uint8_t[w*h];
+		memset(normalized, 0, w*h);
+
+		for (size_t i = 0, j = 0; i < w*h * 4; i += 4, j++)
+		{
+			uint8_t r = pixels[i];
+			uint8_t g = pixels[i + 1];
+			uint8_t b = pixels[i + 2];
+
+			uint8_t &n = normalized[j];
+
+			if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
+				n = 255;
+			else
+				n = 0;
+		}
+
+		CImage tmp;
+		tmp.allocatePixels(w, h);
+		uint8_t *pixels2 = tmp.getPixels();
+		if (NULL != pixels2)
+		{
+			for (size_t i = 0, j = 0; i < w*h * 4; i += 4, j++)
+			{
+				uint8_t n = normalized[j];
+
+				pixels2[i] = n;
+				pixels2[i + 1] = n;
+				pixels2[i + 2] = n;
+				pixels2[i + 3] = 255;
+			}
+		}
+
+		CImage::IImageIO *io = in.getImageKindIO("tga");
+		io->storeImageFile(out, &tmp);
+
+		delete[] normalized;
+
+		return true;
+	}
+	else
+		return false;
+}
+
+
+/*
 bool extracttable(CImage &in, const std::string &out)
 {
 	uint8_t *pixels = in.getPixels();
@@ -101,7 +154,8 @@ bool extracttable(CImage &in, const std::string &out)
 	else
 		return false;
 }
-
+*/
+/*
 bool extractnum(CImage &in, const std::string &out)
 {
 	uint8_t *pixels = in.getPixels();
@@ -163,44 +217,8 @@ bool extractnum(CImage &in, const std::string &out)
 	else
 		return false;
 }
+*/
 
-
-SCAN_API int open_scan(const char* scan)
-{
-	CRaptorErrorManager *mgr = Raptor::GetErrorManager();
-
-	CImage image;
-	CImage::IImageOP::operation_param_t param;
-	CVaArray<CImage::IImageOP::OP_KIND> iops;
-
-	std::string scanfile(scan);
-	if (image.loadImage(scanfile, iops, param))
-	{
-		if (!extracttable(image, "table.tga"))
-		{
-			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-									 CRaptorErrorManager::RAPTOR_ERROR,
-									 "Impossible d'extraire la table des réponses");
-			return 0;
-		}
-		else if (!extractnum(image, "num.tiff"))
-		{
-			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-									 CRaptorErrorManager::RAPTOR_ERROR,
-									 "Impossible d'extraire l'identifiant");
-			return 0;
-		}
-		else
-			return 1;
-	}
-	else
-	{
-		mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-								 CRaptorErrorManager::RAPTOR_FATAL,
-								 "Impossible d'ouvrir l'image source");
-		return 0;
-	}
-}
 
 SCAN_API uint32_t extract_scan_id(const char* scan)
 {
@@ -227,6 +245,10 @@ SCAN_API uint32_t extract_scan_id(const char* scan)
 					buffer[i] = '0';
 				else if (buffer[i] == 'O')
 					buffer[i] = '0';
+				else if (buffer[i] == 'I')
+					buffer[i] = '1';
+				else if (buffer[i] == 'l')
+					buffer[i] = '1';
 			}
 			id = atoi(buffer);
 		}

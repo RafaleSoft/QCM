@@ -16,8 +16,13 @@
 RAPTOR_NAMESPACE
 
 
+extern bool extracttable(CImage &in, const std::string &out);
+extern bool extractnum(CImage &in, const std::string &out);
 
-std::vector<SCAN> global_scans;
+//	Global variable to hold a set of results for a set of scan (typically a classroom)
+std::vector<SCAN>	global_scans;
+//	Global variable to hold an image for successive operations
+CImage				*current_scan = NULL;
 
 
 
@@ -43,61 +48,6 @@ SCAN_API int release_scan(void)
 	bool b = Raptor::glQuitRaptor();
 
 	return ((1 == c) && b ? 1 : 0);
-}
-
-
-const uint8_t TRESH = 192;
-
-bool normalize(CImage &in, const std::string &out)
-{
-	uint8_t *pixels = in.getPixels();
-	if (NULL != pixels)
-	{
-		size_t w = in.getWidth();
-		size_t h = in.getHeight();
-
-		uint8_t *normalized = new uint8_t[w*h];
-		memset(normalized, 0, w*h);
-
-		for (size_t i = 0, j = 0; i < w*h * 4; i += 4, j++)
-		{
-			uint8_t r = pixels[i];
-			uint8_t g = pixels[i + 1];
-			uint8_t b = pixels[i + 2];
-
-			uint8_t &n = normalized[j];
-
-			if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
-				n = 255;
-			else
-				n = 0;
-		}
-
-		CImage tmp;
-		tmp.allocatePixels(w, h);
-		uint8_t *pixels2 = tmp.getPixels();
-		if (NULL != pixels2)
-		{
-			for (size_t i = 0, j = 0; i < w*h * 4; i += 4, j++)
-			{
-				uint8_t n = normalized[j];
-
-				pixels2[i] = n;
-				pixels2[i + 1] = n;
-				pixels2[i + 2] = n;
-				pixels2[i + 3] = 255;
-			}
-		}
-
-		CImage::IImageIO *io = in.getImageKindIO("tga");
-		io->storeImageFile(out, &tmp);
-
-		delete[] normalized;
-
-		return true;
-	}
-	else
-		return false;
 }
 
 
@@ -131,5 +81,86 @@ SCAN_API int get_scan_answers(const SCAN* scan)
 			scan->answers[i] = g_scan.answers[i];
 
 	return 1;
+}
+
+SCAN_API int open_scan(const char* scan)
+{
+	CRaptorErrorManager *mgr = Raptor::GetErrorManager();
+
+	CImage image;
+	CImage::IImageOP::operation_param_t param;
+	CVaArray<CImage::IImageOP::OP_KIND> iops;
+
+	std::string scanfile(scan);
+	if (image.loadImage(scanfile, iops, param))
+	{
+		if (!extracttable(image, "table.tga"))
+		{
+			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
+									 CRaptorErrorManager::RAPTOR_ERROR,
+									 "Impossible d'extraire la table des réponses");
+			return 0;
+		}
+		else if (!extractnum(image, "num.tiff"))
+		{
+			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
+									 CRaptorErrorManager::RAPTOR_ERROR,
+									 "Impossible d'extraire l'identifiant");
+			return 0;
+		}
+		else
+			return 1;
+	}
+	else
+	{
+		mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
+								 CRaptorErrorManager::RAPTOR_FATAL,
+								 "Impossible d'ouvrir l'image source");
+		return 0;
+	}
+}
+
+
+SCAN_API int open_doc(const char* doc)
+{
+	if (NULL == doc)
+		return false;
+
+	stringstream cmd;
+	cmd << "F:\\QCM\\ghostscript\\gswin32c.exe -dNOPAUSE -dBATCH -sDEVICE=jpeg -sOutputFile=scan_p%d.jpg -r300x300 ";
+	cmd << doc;
+	cmd << std::ends;
+	int ex = system(cmd.str().c_str());
+
+	return ex;
+}
+
+SCAN_API int close_doc()
+{
+	for (size_t i = 0; i < global_scans.size(); i++)
+	{
+		SCAN& g_scan = global_scans[i];
+		if (g_scan.answers != NULL)
+			delete[] g_scan.answers;
+	}
+
+	if (NULL != current_scan)
+		delete current_scan;
+
+	global_scans.clear();
+
+	int num_scan = 1;
+	int rt = 0;
+	while (0 == rt)
+	{
+		stringstream doc;
+		doc << "scan_p" << num_scan++ << ".jpg" << ends;
+		rt = rt | _unlink(doc.str().c_str());
+	}
+
+	rt = rt | _unlink("rectified.jpg");
+	rt = rt | _unlink("resized.jpg");
+
+	return (0 == rt);
 }
 
