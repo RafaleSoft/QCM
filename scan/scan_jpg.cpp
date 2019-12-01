@@ -22,7 +22,7 @@ extern std::vector<SCAN> global_scans;
 
 
 //	Full table extraction normaliser threshold (below: black, above: white)
-const uint8_t TRESH = 210; // 192;
+const uint8_t TRESH = 192;
 //	Table cell filled ratio: above 1/FILL, cell is filled, empty otherwise
 const uint8_t FILL = 9;
 

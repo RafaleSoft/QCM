@@ -152,7 +152,7 @@ bool extracttable(CImage &in, const std::string &out)
 
 					uint8_t &n = table[(j*DEFAULT_NUM_COLUMNS + c) * TABLE_STRIPE_WIDTH + k];
 
-					if ((r >= TRESH) || (g >= TRESH) || (b >= TRESH))
+					if ((r >= TRESH_HIGH) || (g >= TRESH_HIGH) || (b >= TRESH_HIGH))
 						n = 255;
 					else
 						n = 0;
@@ -527,7 +527,7 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 		X.push_back(x);
 		Y.push_back(y);
 
-		bool b = false;
+		bool end_of_line = false;
 
 		int cur_x = x;
 		int cur_y = y;
@@ -538,7 +538,7 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 
 		int maxM = 0;
 
-		while (!b)
+		while (!end_of_line)
 		{
 			int M = 255;
 			int next_x = cur_x + 1;
@@ -546,10 +546,10 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 			int d[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 			int offset = (cur_x + (w * cur_y)) * 4;
-			uint8_t r1 = pixels[offset];
-			uint8_t g1 = pixels[offset + 1];
-			uint8_t b1 = pixels[offset + 2];
-			CColor::RGBA c1 = CColor::RGBA((float)r1 / 255.0f, (float)g1 / 255.0f, (float)b1 / 255.0f, 1.0f);
+			uint8_t r = pixels[offset];
+			uint8_t g = pixels[offset + 1];
+			uint8_t b = pixels[offset + 2];
+			CColor::RGBA c1 = CColor::RGBA((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
 			float l1 = c1.operator raptor::CColor::YUVA().y;
 
 			// do not go backwards: limit to 5 possible steps.
@@ -568,8 +568,10 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 
 			maxM = max(M, maxM);
 
-			if ((M > 50) || (X.size() > in.getWidth()))
-				b = true;
+			if ((M > 60) ||									// check relative jump in luminosity
+				(X.size() > (in.getWidth() - x)) ||			// check border of image is reached
+				((r > TRESH_HIGH) && (b > TRESH_HIGH) && (g > TRESH_HIGH)))	// check absolute luminosity
+				end_of_line = true;
 			else
 			{
 				//int offset = (cur_x + (w * cur_y)) * 4;
@@ -593,10 +595,10 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 			return true;
 		}
 		else
-			return false;
+			return false; // no line found
 	}
 	else
-		return false;
+		return false;	// no pixels
 }
 
 //
@@ -646,39 +648,51 @@ int rotate(CImage &in, CImage &out, float angle, float centerx, float centery)
 
 					int offset_src = (((h - J - 1) * w) + I) * 4;
 					float fxy = (1 - factx) * (1 - facty);
-					r += fxy * pixels[offset_src];
-					g += fxy * pixels[offset_src + 1];
-					b += fxy * pixels[offset_src + 2];
-					a += fxy * pixels[offset_src + 3];
-
-					if (I < w - 1)
+					if (offset_src > 0)
 					{
-						offset_src = (((h - J - 1) * w) + I + 1) * 4;
-						fxy = factx * (1 - facty);
 						r += fxy * pixels[offset_src];
 						g += fxy * pixels[offset_src + 1];
 						b += fxy * pixels[offset_src + 2];
 						a += fxy * pixels[offset_src + 3];
+					}
+
+					if (I < w - 1)
+					{
+						offset_src = (((h - J - 1) * w) + I + 1) * 4;
+						if (offset_src > 0)
+						{
+							fxy = factx * (1 - facty);
+							r += fxy * pixels[offset_src];
+							g += fxy * pixels[offset_src + 1];
+							b += fxy * pixels[offset_src + 2];
+							a += fxy * pixels[offset_src + 3];
+						}
 					}
 
 					if (J < h - 1)
 					{
 						offset_src = ((((h - J - 1) - 1) * w) + I) * 4;
-						fxy = (1 - factx) * facty;
-						r += fxy * pixels[offset_src];
-						g += fxy * pixels[offset_src + 1];
-						b += fxy * pixels[offset_src + 2];
-						a += fxy * pixels[offset_src + 3];
+						if (offset_src > 0)
+						{
+							fxy = (1 - factx) * facty;
+							r += fxy * pixels[offset_src];
+							g += fxy * pixels[offset_src + 1];
+							b += fxy * pixels[offset_src + 2];
+							a += fxy * pixels[offset_src + 3];
+						}
 					}
 
 					if ((J < h - 1) && (I < w - 1))
 					{
 						offset_src = ((((h - J - 1) - 1) * w) + I + 1) * 4;
-						fxy = factx * facty;
-						r += fxy * pixels[offset_src];
-						g += fxy * pixels[offset_src + 1];
-						b += fxy * pixels[offset_src + 2];
-						a += fxy * pixels[offset_src + 3];
+						if (offset_src > 0)
+						{
+							fxy = factx * facty;
+							r += fxy * pixels[offset_src];
+							g += fxy * pixels[offset_src + 1];
+							b += fxy * pixels[offset_src + 2];
+							a += fxy * pixels[offset_src + 3];
+						}
 					}
 
 					int offset_dst = (i + (w * (h - j - 1))) * 4;	// image is upside down
