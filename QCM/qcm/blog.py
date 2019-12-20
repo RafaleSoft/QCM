@@ -8,16 +8,43 @@ from qcm.db import get_db
 
 bp = Blueprint('blog', __name__)
 
+niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
+
 
 @bp.route('/')
 def index():
     db = get_db()
+    cls = db.execute(
+        'SELECT * FROM classes'
+        ' WHERE teacher_id = ?', (g.user['id'],)
+    ).fetchall()
+    classes = []
+    for c in cls:
+        classe = {}
+        classe['id'] = c['id']
+        classe['classname'] = c['classname']
+        classe['level'] = niveaux[c['level']]
+        els = db.execute(
+            'SELECT * FROM students'
+            ' WHERE class_id = ?', (c['id'],)
+        ).fetchall()
+        print('eleves:', len(els))
+        classe['eleves'] = len(els)
+
+        evals = db.execute(
+            'SELECT * FROM evaluations'
+            ' WHERE class_id = ?', (c['id'],)
+        ).fetchall()
+        classe['evaluations'] = evals
+        classes.append(classe)
+    '''
     posts = db.execute(
         'SELECT p.id, title, body, created, author_id, username'
         ' FROM post p JOIN users u ON p.author_id = u.id'
         ' ORDER BY created DESC'
-    ).fetchall()
-    return render_template('blog/index.html', posts=posts)
+    ).fetchall()'''
+
+    return render_template('blog/index.html', classes=classes)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

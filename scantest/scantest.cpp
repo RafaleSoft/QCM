@@ -13,7 +13,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	init_scan();
 
 	/*	Test PDF Scan	*/
-	//open_doc("501Copies.pdf");
+	open_doc("507Eval12dec2019.pdf");
 
 	std::ofstream correction("S.txt");
 

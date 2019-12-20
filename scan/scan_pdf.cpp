@@ -50,17 +50,17 @@ const size_t TABLE_X_END[DEFAULT_NUM_COLUMNS] = { 260, 536, 811, 1086, 1361 };
 //	Identification lines
 const int CORNER_X = 86;
 
-const float CORNER1_YMIN = (133.0f - 10.0f) / 2338.0f;
-const float CORNER1_Y = 133.0f / 2338.0f;
-const float CORNER1_YMAX = (133.0f + 10.0f) / 2338.0f;
+const float CORNER1_YMIN = 105;
+const float CORNER1_Y = 130;
+const float CORNER1_YMAX = 155;
 
-const float CORNER2_YMIN = (190.0f - 10.0f) / 2338.0f;
-const float CORNER2_Y = 190.0f / 2338.0f;
-const float CORNER2_YMAX = (190.0f + 10.0f) / 2338.0f;
+const float CORNER2_YMIN = 155;
+const float CORNER2_Y = 180;
+const float CORNER2_YMAX = 205;
 
 const int CORNER3_YMIN = 205;
-const int CORNER3_Y = 231;
-const int CORNER3_YMAX = 256;
+const int CORNER3_Y = 230;
+const int CORNER3_YMAX = 255;
 
 
 
@@ -367,8 +367,8 @@ SCAN_API int resize_scan(CImage& image, size_t newW, size_t newH)
 			}
 		}
 
-		//CImage::IImageIO *io = current_scan->getImageKindIO("tga");
-		//io->storeImageFile("resized.tga", current_scan);
+		CImage::IImageIO *io = current_scan->getImageKindIO("tga");
+		io->storeImageFile("resized.tga", current_scan);
 
 		return 1;
 	}
@@ -793,17 +793,11 @@ SCAN_API int rectify_scan(const char* scan)
 					return 0;
 
 				CImage result;
-
+				float angle = atan2((float)(y2 - y), (float)(x2 - x));
 				if (y2 > y)
-				{
-					float angle = atan2((float)(y2 - y), (float)(x2 - x));
 					rectify = rotate(image, result, -angle, 0, 0);
-				}
 				else
-				{
-					float angle = atan2((float)(y2 - y), (float)(x2 - x));
 					rectify = rotate(image, result, -angle, 0, 0);
-				}
 
 				if (1 == rectify)
 				{
@@ -821,13 +815,13 @@ SCAN_API int rectify_scan(const char* scan)
 
 					if ((dy > CORNER1_YMIN) && (dy < CORNER1_YMAX))
 					{
-						tx = 6 + floor(0.5f + CORNER_X * (float)current_scan->getWidth() - fact * x);
-						ty = 3 + floor(0.5f + CORNER1_Y * (float)current_scan->getHeight() - fact * (float)(image.getHeight() - y));
+						tx = CORNER_X - dx;
+						ty = CORNER1_Y - dy;
 					}
 					else if ((dy > CORNER2_YMIN) && (dy < CORNER2_YMAX))
 					{
-						tx = 7 + floor(0.5f + CORNER_X * (float)current_scan->getWidth() - fact * x);
-						ty = 4 + floor(0.5f + CORNER2_Y * (float)current_scan->getHeight() - fact * (float)(image.getHeight() - y));
+						tx = CORNER_X - dx;
+						ty = CORNER2_Y - dy;
 					}
 					else if ((dy > CORNER3_YMIN) && (dy < CORNER3_YMAX))
 					{
