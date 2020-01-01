@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\classify\adaptive.cpp" />
+    <ClCompile Include="..\..\src\classify\adaptmatch.cpp" />
+    <ClCompile Include="..\..\src\classify\blobclass.cpp" />
+    <ClCompile Include="..\..\src\classify\classify.cpp" />
+    <ClCompile Include="..\..\src\classify\cluster.cpp" />
+    <ClCompile Include="..\..\src\classify\clusttool.cpp" />
+    <ClCompile Include="..\..\src\classify\cutoffs.cpp" />
+    <ClCompile Include="..\..\src\classify\featdefs.cpp" />
+    <ClCompile Include="..\..\src\classify\float2int.cpp" />
+    <ClCompile Include="..\..\src\classify\fpoint.cpp" />
+    <ClCompile Include="..\..\src\classify\intfeaturespace.cpp" />
+    <ClCompile Include="..\..\src\classify\intfx.cpp" />
+    <ClCompile Include="..\..\src\classify\intmatcher.cpp" />
+    <ClCompile Include="..\..\src\classify\intproto.cpp" />
+    <ClCompile Include="..\..\src\classify\kdtree.cpp" />
+    <ClCompile Include="..\..\src\classify\mf.cpp" />
+    <ClCompile Include="..\..\src\classify\mfdefs.cpp" />
+    <ClCompile Include="..\..\src\classify\mfoutline.cpp" />
+    <ClCompile Include="..\..\src\classify\mfx.cpp" />
+    <ClCompile Include="..\..\src\classify\normfeat.cpp" />
+    <ClCompile Include="..\..\src\classify\normmatch.cpp" />
+    <ClCompile Include="..\..\src\classify\ocrfeatures.cpp" />
+    <ClCompile Include="..\..\src\classify\outfeat.cpp" />
+    <ClCompile Include="..\..\src\classify\picofeat.cpp" />
+    <ClCompile Include="..\..\src\classify\protos.cpp" />
+    <ClCompile Include="..\..\src\classify\shapeclassifier.cpp" />
+    <ClCompile Include="..\..\src\classify\shapetable.cpp" />
+    <ClCompile Include="..\..\src\classify\tessclassifier.cpp" />
+    <ClCompile Include="..\..\src\classify\trainingsample.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\classify\adaptive.h" />
+    <ClInclude Include="..\..\src\classify\blobclass.h" />
+    <ClInclude Include="..\..\src\classify\classify.h" />
+    <ClInclude Include="..\..\src\classify\cluster.h" />
+    <ClInclude Include="..\..\src\classify\clusttool.h" />
+    <ClInclude Include="..\..\src\classify\featdefs.h" />
+    <ClInclude Include="..\..\src\classify\float2int.h" />
+    <ClInclude Include="..\..\src\classify\fpoint.h" />
+    <ClInclude Include="..\..\src\classify\intfeaturespace.h" />
+    <ClInclude Include="..\..\src\classify\intfx.h" />
+    <ClInclude Include="..\..\src\classify\intmatcher.h" />
+    <ClInclude Include="..\..\src\classify\intproto.h" />
+    <ClInclude Include="..\..\src\classify\kdtree.h" />
+    <ClInclude Include="..\..\src\classify\mf.h" />
+    <ClInclude Include="..\..\src\classify\mfdefs.h" />
+    <ClInclude Include="..\..\src\classify\mfoutline.h" />
+    <ClInclude Include="..\..\src\classify\mfx.h" />
+    <ClInclude Include="..\..\src\classify\normfeat.h" />
+    <ClInclude Include="..\..\src\classify\normmatch.h" />
+    <ClInclude Include="..\..\src\classify\ocrfeatures.h" />
+    <ClInclude Include="..\..\src\classify\outfeat.h" />
+    <ClInclude Include="..\..\src\classify\picofeat.h" />
+    <ClInclude Include="..\..\src\classify\protos.h" />
+    <ClInclude Include="..\..\src\classify\shapeclassifier.h" />
+    <ClInclude Include="..\..\src\classify\shapetable.h" />
+    <ClInclude Include="..\..\src\classify\tessclassifier.h" />
+    <ClInclude Include="..\..\src\classify\trainingsample.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A515AC87-D96A-4B2E-8E58-43529739B59A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tesseract_classify</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\src\training;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\ccutil;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -97,6 +97,8 @@ env.bak/
 venv.bak/
 ipch/
 Raptor/
+*.VC.db
+*.VC.opendb
 
 # Spyder project settings
 .spyderproject

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\wordrec\associate.cpp" />
+    <ClCompile Include="..\..\src\wordrec\chop.cpp" />
+    <ClCompile Include="..\..\src\wordrec\chopper.cpp" />
+    <ClCompile Include="..\..\src\wordrec\drawfx.cpp" />
+    <ClCompile Include="..\..\src\wordrec\findseam.cpp" />
+    <ClCompile Include="..\..\src\wordrec\gradechop.cpp" />
+    <ClCompile Include="..\..\src\wordrec\language_model.cpp" />
+    <ClCompile Include="..\..\src\wordrec\lm_consistency.cpp" />
+    <ClCompile Include="..\..\src\wordrec\lm_pain_points.cpp" />
+    <ClCompile Include="..\..\src\wordrec\lm_state.cpp" />
+    <ClCompile Include="..\..\src\wordrec\outlines.cpp" />
+    <ClCompile Include="..\..\src\wordrec\params_model.cpp" />
+    <ClCompile Include="..\..\src\wordrec\pieces.cpp" />
+    <ClCompile Include="..\..\src\wordrec\plotedges.cpp" />
+    <ClCompile Include="..\..\src\wordrec\render.cpp" />
+    <ClCompile Include="..\..\src\wordrec\segsearch.cpp" />
+    <ClCompile Include="..\..\src\wordrec\tface.cpp" />
+    <ClCompile Include="..\..\src\wordrec\wordclass.cpp" />
+    <ClCompile Include="..\..\src\wordrec\wordrec.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\wordrec\associate.h" />
+    <ClInclude Include="..\..\src\wordrec\chop.h" />
+    <ClInclude Include="..\..\src\wordrec\drawfx.h" />
+    <ClInclude Include="..\..\src\wordrec\findseam.h" />
+    <ClInclude Include="..\..\src\wordrec\language_model.h" />
+    <ClInclude Include="..\..\src\wordrec\lm_consistency.h" />
+    <ClInclude Include="..\..\src\wordrec\lm_pain_points.h" />
+    <ClInclude Include="..\..\src\wordrec\lm_state.h" />
+    <ClInclude Include="..\..\src\wordrec\measure.h" />
+    <ClInclude Include="..\..\src\wordrec\outlines.h" />
+    <ClInclude Include="..\..\src\wordrec\params_model.h" />
+    <ClInclude Include="..\..\src\wordrec\plotedges.h" />
+    <ClInclude Include="..\..\src\wordrec\render.h" />
+    <ClInclude Include="..\..\src\wordrec\wordrec.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{87F6F602-C58C-4028-86A3-2EBA45A3BE8F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tesseract_wordrec</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\classify;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\ccutil;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

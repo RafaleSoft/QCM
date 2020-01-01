@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\ccstruct\blamer.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\blobbox.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\blobs.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\blread.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\boxread.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\boxword.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\ccstruct.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\coutln.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\detlinefit.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\dppoint.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\fontinfo.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\imagedata.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\linlsq.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\matrix.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\mod128.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\normalis.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\ocrblock.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\ocrpara.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\ocrrow.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\otsuthr.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\pageres.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\params_training_featdef.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\pdblock.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\points.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\polyaprx.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\polyblk.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\quadlsq.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\quspline.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\ratngs.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\rect.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\rejctmap.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\seam.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\split.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\statistc.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\stepblob.cpp" />
+    <ClCompile Include="..\..\src\ccstruct\werd.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\ccstruct\blamer.h" />
+    <ClInclude Include="..\..\src\ccstruct\blobbox.h" />
+    <ClInclude Include="..\..\src\ccstruct\blobs.h" />
+    <ClInclude Include="..\..\src\ccstruct\blread.h" />
+    <ClInclude Include="..\..\src\ccstruct\boxread.h" />
+    <ClInclude Include="..\..\src\ccstruct\boxword.h" />
+    <ClInclude Include="..\..\src\ccstruct\ccstruct.h" />
+    <ClInclude Include="..\..\src\ccstruct\coutln.h" />
+    <ClInclude Include="..\..\src\ccstruct\crakedge.h" />
+    <ClInclude Include="..\..\src\ccstruct\debugpixa.h" />
+    <ClInclude Include="..\..\src\ccstruct\detlinefit.h" />
+    <ClInclude Include="..\..\src\ccstruct\dppoint.h" />
+    <ClInclude Include="..\..\src\ccstruct\fontinfo.h" />
+    <ClInclude Include="..\..\src\ccstruct\imagedata.h" />
+    <ClInclude Include="..\..\src\ccstruct\linlsq.h" />
+    <ClInclude Include="..\..\src\ccstruct\matrix.h" />
+    <ClInclude Include="..\..\src\ccstruct\mod128.h" />
+    <ClInclude Include="..\..\src\ccstruct\normalis.h" />
+    <ClInclude Include="..\..\src\ccstruct\ocrblock.h" />
+    <ClInclude Include="..\..\src\ccstruct\ocrpara.h" />
+    <ClInclude Include="..\..\src\ccstruct\ocrrow.h" />
+    <ClInclude Include="..\..\src\ccstruct\otsuthr.h" />
+    <ClInclude Include="..\..\src\ccstruct\pageres.h" />
+    <ClInclude Include="..\..\src\ccstruct\params_training_featdef.h" />
+    <ClInclude Include="..\..\src\ccstruct\pdblock.h" />
+    <ClInclude Include="..\..\src\ccstruct\points.h" />
+    <ClInclude Include="..\..\src\ccstruct\polyaprx.h" />
+    <ClInclude Include="..\..\src\ccstruct\polyblk.h" />
+    <ClInclude Include="..\..\src\ccstruct\publictypes.h" />
+    <ClInclude Include="..\..\src\ccstruct\quadlsq.h" />
+    <ClInclude Include="..\..\src\ccstruct\quadratc.h" />
+    <ClInclude Include="..\..\src\ccstruct\quspline.h" />
+    <ClInclude Include="..\..\src\ccstruct\ratngs.h" />
+    <ClInclude Include="..\..\src\ccstruct\rect.h" />
+    <ClInclude Include="..\..\src\ccstruct\rejctmap.h" />
+    <ClInclude Include="..\..\src\ccstruct\seam.h" />
+    <ClInclude Include="..\..\src\ccstruct\split.h" />
+    <ClInclude Include="..\..\src\ccstruct\statistc.h" />
+    <ClInclude Include="..\..\src\ccstruct\stepblob.h" />
+    <ClInclude Include="..\..\src\ccstruct\werd.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C215B79E-B698-4105-AF20-B1834C9A6A2B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tesseract_ccstruct</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\vstudio\tesseract_port;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\wordrec;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)leptonica-1.78.0\src;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
