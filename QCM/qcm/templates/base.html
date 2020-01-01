@@ -7,6 +7,7 @@
   <ul>
     {% if g.user %}
       <li><span>Bonjour {{ g.user['username'] }} !</span>
+      <li><a href="{{ url_for('blog.index') }}">Home</a>
       <li><a href="{{ url_for('profile.index') }}">Profile</a>
       <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
@@ -36,15 +37,15 @@
       <td>Contact information:</td>
       <td align="right">
            <table>
-           <tr><td><a href="mailto:fabrice.ferrand@safrangroup.com">fabrice.ferrand@safrangroup.com</a></td></tr>
-           <tr><td>01.30.27.17.49 - 641749</td></tr>
-           <tr><td>Eragny - Bât J1-030</td></tr>
+           <tr><td><a href="mailto:fabfer@wanadoo.fr">fabfer@wanadoo.fr</a></td></tr>
+           <tr><td>06.37.96.87.79</td></tr>
+           <tr><td>Rafale Soft Inc. (c)</td></tr>
            </table>
       </td>
       <td>
           <table>
-              <tr><td>Version  1.0.3</td></tr>
-              <tr><td>Last update: 20/11/2018</td></tr>
+              <tr><td>Version  1.0.0</td></tr>
+              <tr><td>Last update: 20/12/2019</td></tr>
           </table>
       </td>
   </tr></table></footer>

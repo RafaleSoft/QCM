@@ -30,6 +30,14 @@ CREATE TABLE students (
 
 CREATE TABLE evaluations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  class_id INTEGER NOT NULL,
+  date_eval TEXT NOT NULL,
+  subject TEXT,
+  FOREIGN KEY (class_id) REFERENCES classes (id)
+);
+
+CREATE TABLE notes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   student_id INTEGER NOT NULL,
   mark REAL,
   FOREIGN KEY (student_id) REFERENCES students (id)

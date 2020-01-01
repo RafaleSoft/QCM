@@ -31,12 +31,12 @@
             <header><h1>{{ c['classname'] }} - {{ c['level'] }}</h1></header>
             {% for e in c['eleves'] %}
                 <p>{{ e['firstname'] }} {{ e['lastname']}}
-                <a class="action" href="{{ url_for('profile.editStudent', student_id=e['id']) }}">Modifier</a>
-                <a class="action" href="{{ url_for('profile.deleteStudent', student_id=e['id']) }}">Supprimer</a>
+                <a class="action" href="{{ url_for('profile.editStudent', student_id=e['id']) }}"><img src="static/pencil_xs.png"/></a>
+                <a class="action" href="{{ url_for('profile.deleteStudent', student_id=e['id']) }}"><img src="static/moins_xs.png"/></a>
                 </p>
             {% endfor %}
-            <a class="action" href="{{ url_for('profile.classroomUpdate', class_id=c['id']) }}">Ajouter Elève</a>
-            <a class="action" href="{{ url_for('profile.deleteClassroom', class_id=c['id']) }}">Supprimer Classe</a>
+            <a class="action" href="{{ url_for('profile.classroomUpdate', class_id=c['id']) }}"><img src="static/plus.png"/></a>
+            <a class="action" href="{{ url_for('profile.deleteClassroom', class_id=c['id']) }}"><img src="static/garbage.png"/></a>
         </div>
         {% endfor %}
     </div>

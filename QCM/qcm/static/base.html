@@ -1,0 +1,50 @@
+<!doctype html>
+<title>Météo Patroller</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<body>
+
+<nav>
+  <h1>Météo Patroller SDT</h1>
+    <table>
+        <tr>
+         <td><a href="{{ url_for('index') }}">Global Status</a></td>
+         <td><a href="{{ url_for('jenkins') }}">Jenkins Status</a></td>
+         <td><a href="{{ url_for('klocwork') }}">Klocwork Status</a></td>
+         <td><a href="{{ url_for('matlab') }}">Matlab Status</a></td>
+         <td><a href="{{ url_for('compil') }}">RHEL 7.3 Status</a></td>
+         <td><a href="{{ url_for('compil2') }}">RHEL 7.4 Status</a></td>
+        </tr>
+    </table>
+</nav>
+
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+</section>
+
+<section class="footer">
+  <footer><table><tr>
+      <td>Powered by: <a href="http://flask.pocoo.org/">Flask</a> </td>
+      <td><a href="http://flask.pocoo.org/"><img src="static/flask_small.png"/></a></td>
+      <td> and <a href="https://www.python.org/">Python 3.5</a></td>
+      <td><a href="https://www.python.org/"><img src="static/python-logo.png"/></a></td>
+      <td>Contact information:</td>
+      <td align="right">
+           <table>
+           <tr><td><a href="mailto:fabrice.ferrand@safrangroup.com">fabrice.ferrand@safrangroup.com</a></td></tr>
+           <tr><td>01.30.27.17.49 - 641749</td></tr>
+           <tr><td>Eragny - Bât J1-030</td></tr>
+           </table>
+      </td>
+      <td>
+          <table>
+              <tr><td>Version  1.0.3</td></tr>
+              <tr><td>Last update: 20/11/2018</td></tr>
+          </table>
+      </td>
+  </tr></table></footer>
+</section>
+
+</body>

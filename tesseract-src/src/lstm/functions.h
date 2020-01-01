@@ -46,17 +46,17 @@ extern double LogisticTable[];
 
 typedef double (*LUT_FUNCTION)(int i);
 
-constexpr double LUTFuncTanh(int i) {
+CONSTEXPR double LUTFuncTanh(int i) {
   return std::tanh(i / kScaleFactor);
 }
 
-constexpr double LUTFuncLog(int i) {
+CONSTEXPR double LUTFuncLog(int i) {
   return 1 / (1 + std::exp(-i / kScaleFactor));
 }
 
 template<int n, LUT_FUNCTION f>
 struct LUTTempl {
-  constexpr LUTTempl() : table_() {
+	CONSTEXPR LUTTempl() : table_() {
     for (auto i = 0; i < n; ++i) {
       table_[i] = f(i);
     }

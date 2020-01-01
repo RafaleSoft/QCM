@@ -58,7 +58,7 @@
     <CustomBuild Include="..\..\src\lstm\tfnetwork.proto">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)protoc-3.10.1-win32\bin\protoc.exe --cpp_out=$(ProjectDir) --proto_path=$(SolutionDir)tensorflow-src  --proto_path=$(SolutionDir)protoc-3.10.1-win32  $(SolutionDir)tesseract-src\src\lstm\tfnetwork.proto</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)protoc-3.10.1-win32\bin\protoc.exe --cpp_out=$(ProjectDir) --proto_path=$(SolutionDir)tensorflow-src  --proto_path=$(SolutionDir)protoc-3.10.1-win32  --proto_path=$(SolutionDir)tesseract-src\src\lstm $(SolutionDir)tesseract-src\src\lstm\tfnetwork.proto</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)tfnetwork.pb.cc;$(ProjectDir)tfnetwork.pb.h</Outputs>
     </CustomBuild>
   </ItemGroup>
@@ -102,7 +102,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\vstudio\tesseract_ltsm;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\arch;$(SolutionDir)tesseract-src\src\ccstruct;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\vstudio\tesseract_ltsm;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\arch;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)protobuf-3.10.x\src</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
