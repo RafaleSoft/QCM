@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Import evaluation data{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="file">Fichier</label>
+    <input name="file" id="file" type="file" value="{{ request.form['file'] }}" required>
+    <label for="date">Date évaluation</label>
+    <input name="date" id="date" type="date" value="{{ request.form['date'] }}" required>
+    <input type="submit" value="Load">
+  </form>
+{% endblock %}

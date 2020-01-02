@@ -49,6 +49,7 @@ class QCM:
         from . import profile
         app.register_blueprint(profile.bp)
 
+        blog.instance_path = app.instance_path
         return app
 
     @staticmethod

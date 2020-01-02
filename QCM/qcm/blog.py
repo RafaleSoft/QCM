@@ -1,17 +1,20 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
+    Blueprint, flash, g, redirect, render_template, request, url_for, current_app
 )
 from werkzeug.exceptions import abort
 
 from qcm.auth import login_required
 from qcm.db import get_db
+from qcm.qcm import txt2qcm, qcm2tex
+import os
 
 bp = Blueprint('blog', __name__)
-
+instance_path = ''
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
 
 
 @bp.route('/')
+@login_required
 def index():
     db = get_db()
     cls = db.execute(
@@ -37,6 +40,7 @@ def index():
         ).fetchall()
         classe['evaluations'] = evals
         classes.append(classe)
+
     '''
     posts = db.execute(
         'SELECT p.id, title, body, created, author_id, username'
@@ -45,6 +49,42 @@ def index():
     ).fetchall()'''
 
     return render_template('blog/index.html', classes=classes)
+
+
+@bp.route('/<int:class_size>/genevaluation', methods=('GET', 'POST'))
+@login_required
+def genevaluation(class_size):
+    if request.method == 'POST':
+        file = request.form['file']
+        date = request.form['date']
+        error = None
+
+        if not file:
+            error = 'Filename is required.'
+        if not date:
+            error = 'Evaluation date is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            '''
+            db = get_db()
+            db.execute(
+                'INSERT INTO post (title, body, author_id)'
+                ' VALUES (?, ?, ?)',
+                (title, body, g.user['id'])
+            )
+            db.commit()
+            '''
+
+            filename = os.path.join(instance_path, file)
+            questions = txt2qcm(filename)
+            if len(questions) > 0:
+                qcm2tex(questions, class_size)
+
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/opendatafile.html')
 
 
 @bp.route('/create', methods=('GET', 'POST'))
@@ -89,6 +129,7 @@ def get_post(post_id, check_author=True):
 
     return post
 
+
 '''
 @bp.route('/<int:post_id>/update', methods=('GET', 'POST'))
 @login_required
@@ -117,6 +158,7 @@ def update(post_id):
 
     return render_template('blog/update.html', post=post)
 '''
+
 
 @bp.route('/<int:post_id>/delete', methods=('POST',))
 @login_required

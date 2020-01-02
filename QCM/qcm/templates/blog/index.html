@@ -13,8 +13,8 @@
 {% for c in classes %}
     <div class="class">
         <h3>{{ c['classname'] }} - Niveau: {{ c['level'] }}, Effectifs:{{ c['eleves'] }}</h3>
-        <button type="button" onclick="alert('Hello world!')">Générer évaluation</button>
-        <button type="button" onclick="alert('Hello world!')">Soumettre évaluation</button>
+        <a class="action" href="{{ url_for('blog.genevaluation', class_size=c['eleves']) }}">Générer évaluation</a>
+        <a class="action" href="{{ url_for('blog.genevaluation', class_size=c['eleves']) }}">Soumettre évaluation</a>
         <h3>Evaluations:</h3>
         <ul>
             {% for e in classes['evaluations'] %}

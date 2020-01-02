@@ -1,0 +1,44 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amsfonts,amssymb,theorem,geometry,times}%,french
+\usepackage{graphicx, color}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{siunitx}
+\sisetup{load-configurations=abbreviations,per-mode=symbol,output-decimal-marker={,}}
+
+% ------------------- Pour elargir au maximum
+
+%portrait
+\setlength{\textheight}{28cm}
+\setlength{\textwidth}{19cm}
+
+\setlength{\hoffset}{-2.5cm}
+\setlength{\voffset}{-3cm}
+
+\usepackage{multicol}
+
+%----------------Les ensembles
+\newcommand{\bb}[1]{\ensuremath{\mathbb{#1}}}
+\newcommand{\R}[0]{\bb{R}}
+\newcommand{\N}[0]{\bb{N}}
+\newcommand{\Q}[0]{\bb{Q}}
+\newcommand{\C}[0]{\bb{C}}
+\newcommand{\Z}[0]{\bb{Z}}
+
+\newcommand{\LL}[0]{\mat{\bf {\bf {\bf HC}}}hoice{\rlap{$\displaystyle [$}}{\rlap{$\textstyle [$}}
+{\rlap{$\scriptstyle [$}}{\rlap{$\scriptscriptstyle [$}}\,[}
+\newcommand{\JJ}[0]{\mat{\bf {\bf {\bf HC}}}hoice{\rlap{$\displaystyle ]$}}{\rlap{$\textstyle ]$}}
+{\rlap{$\scriptstyle ]$}}{\rlap{$\scriptscriptstyle ]$}}\,]}
+\newcommand{\drond}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\intd}[0]{\int\!\!\!\!\int}
+\newcommand{\intt}[0]{\int\!\!\!\!\int\!\!\!\!\int}
+%pour adapter macros d'exocol.tox de Tex en LAtex
+\newcommand{\ex}[0]{\item}
+\newcommand{\exsuite}[0]{\\}
+\newcommand{\formule}[1]{$$ #1 $$}
+
+\newcommand{\titre}[1]{\vskip{5pt}\begin{center}\textbf{#1}\end{center}\vskip{5pt}}
+\def \ds{\displaystyle}
+\pagestyle{empty}
+\newcommand{\vf}[0]{\dotfill\fbox{Vrai}\quad\fbox{Faux}}
+

@@ -1,0 +1,19 @@
+\documentclass[a4paper]{article}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{multicol}
+
+% tikz
+\usepackage[a4paper,margin=2cm,headheight=2cm,headsep=4ex]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{tikzpagenodes}
+\usepackage{eso-pic}
+\AddToShipoutPictureBG{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\draw[line width=0.5mm] ([shift={(-2ex,-2ex)}]current page text area.south west) rectangle
+	([shift={(+2ex,+2ex)}]current page text area.north east);
+	\end{tikzpicture}
+}
+
+\begin{document}
