@@ -768,11 +768,10 @@ SCAN_API int rectify_scan(const char* scan)
 	CRaptorErrorManager *mgr = Raptor::GetErrorManager();
 
 	CImage image;
-	CImage::IImageOP::operation_param_t param;
-	CVaArray<CImage::IImageOP::OP_KIND> iops;
+	const CVaArray<CImage::IImageOP*>& ops = {};
 
 	std::string scanfile(scan);
-	if (image.loadImage(scanfile, iops, param))
+	if (image.loadImage(scan, ops))
 	{
 		int x = 0;
 		int y = 0;

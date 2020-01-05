@@ -23,10 +23,7 @@ def index():
     ).fetchall()
     classes = []
     for c in cls:
-        classe = {}
-        classe['id'] = c['id']
-        classe['classname'] = c['classname']
-        classe['level'] = niveaux[c['level']]
+        classe = {'id': c['id'], 'classname': c['classname'], 'level': niveaux[c['level']]}
         els = db.execute(
             'SELECT * FROM students'
             ' WHERE class_id = ?', (c['id'],)
@@ -51,9 +48,9 @@ def index():
     return render_template('blog/index.html', classes=classes)
 
 
-@bp.route('/<int:class_size>/genevaluation', methods=('GET', 'POST'))
+@bp.route('/<int:class_id>/genevaluation', methods=('GET', 'POST'))
 @login_required
-def genevaluation(class_size):
+def genevaluation(class_id):
     if request.method == 'POST':
         file = request.form['file']
         date = request.form['date']
@@ -77,10 +74,21 @@ def genevaluation(class_size):
             db.commit()
             '''
 
-            filename = os.path.join(instance_path, file)
+            db = get_db()
+            els = db.execute(
+                'SELECT * FROM students'
+                ' WHERE class_id = ?', (class_id,)
+            ).fetchall()
+
+            base_path = os.path.join(instance_path, str(class_id))
+            filename = os.path.join(base_path, file)
+            print('class id:', class_id)
+            print('path:', filename)
             questions = txt2qcm(filename)
             if len(questions) > 0:
-                qcm2tex(questions, class_size)
+                qcm2tex(questions, len(els), base_path)
+                os.system('D:\\texlive\\2019\\bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'sujet.tex'))
+                os.system('D:\\texlive\\2019\\bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'reponse.tex'))
 
             return redirect(url_for('blog.index'))
 

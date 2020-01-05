@@ -13,12 +13,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	// This class is exported from the quirc.dll
-	//class QUIRC_API Cquirc {
-	//public:
-	//	Cquirc(void);
-	//};
-
 	QUIRC_API int  quirc_resize_api(struct quirc *q, int w, int h);
 
 	QUIRC_API unsigned char * quirc_begin_api(struct quirc *q, int *w, int *h);

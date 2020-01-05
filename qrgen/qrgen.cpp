@@ -5,6 +5,9 @@
 #include "qrgen.h"
 #include "QR-Code-generator\c\qrcodegen.h"
 
+#include "zlib.h"
+#include "png.h"
+
 
 QRGEN_API bool qrgen_getModule(const unsigned char qrcode[], int x, int y)
 {
@@ -29,4 +32,9 @@ QRGEN_API bool qrgen_encodeText(const char *text,
 								ecl, minVersion, maxVersion, 
 								mask, boostEcl);
 
+}
+
+QRGEN_API int qrgen_version(void)
+{
+	return 54321;
 }

@@ -29,6 +29,7 @@ QRGEN_API bool qrgen_encodeText(const char *text,
 								enum qrcodegen_Mask mask, 
 								bool boostEcl);
 
+QRGEN_API int qrgen_version(void);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,5 @@
 from random import *
+import os
 
 elevesEntrainement = [['ENTRAINEMENT','entrainement']]
 
@@ -283,9 +284,9 @@ def notation(fsol,felv,listelv,fres):
 
     return
 
-def qcm2tex(qcm, n, sol=False, cor=False):
+def qcm2tex(qcm, n, path, sol=False, cor=False):
     lRep = []
-    with open('sujet.tex', 'w', encoding='latin1') as f:
+    with open(os.path.join(path, 'sujet.tex'), 'w', encoding='latin1') as f:
         with open('D:\\OPENGL\\QCM\\QCM\\qcm\\latex\\entete2.tex', 'r', encoding='utf8') as e:
             line = e.readline()
             while line:
@@ -374,13 +375,12 @@ def qcm2tex(qcm, n, sol=False, cor=False):
                 line = e.readline()
     print('Il y a {} questions '.format(compteur))
 
-    with open('reponse.tex', 'w', encoding='latin1') as f:
+    with open(os.path.join(path, 'reponse.tex'), 'w', encoding='latin1') as f:
         with open('D:\\OPENGL\\QCM\\QCM\\qcm\\latex\\enteteRep.tex', 'r', encoding='utf8') as e:
             line = e.readline()
             while line:
                 f.write(line)
                 line = e.readline()
-
 
         for i in range(1,n+1):
             numCopie = str(i).rjust(2,'0')
@@ -414,8 +414,7 @@ def qcm2tex(qcm, n, sol=False, cor=False):
             f.write('\\end{tabularx}\n')
         f.write('\\end{document}\n')
 
-
-    with open('bonnesReponses.txt','w',encoding='latin1') as f:
+    with open(os.path.join(path, 'bonnesReponses.txt'),'w',encoding='latin1') as f:
         for i in range(1,n+1):
             numCopie = str(i).rjust(2,'0')
             f.write(numCopie+';')

@@ -16,6 +16,14 @@
 
 #define  DEFAULT_NUM_COLUMNS 5
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+	//	Initialize the scan library
+SCAN_API int scan_version(void);
+
 //	Initialize the scan library
 SCAN_API int init_scan(void);
 
@@ -59,3 +67,8 @@ typedef struct SCAN_t
 } SCAN;
 
 SCAN_API int get_scan_answers(const SCAN* scan);
+
+
+#ifdef __cplusplus
+}
+#endif

@@ -25,6 +25,10 @@ std::vector<SCAN>	global_scans;
 CImage				*current_scan = NULL;
 
 
+extern SCAN_API int scan_version(void)
+{
+	return 12345;
+}
 
 SCAN_API int init_scan(void)
 {
@@ -86,13 +90,10 @@ SCAN_API int get_scan_answers(const SCAN* scan)
 SCAN_API int open_scan(const char* scan)
 {
 	CRaptorErrorManager *mgr = Raptor::GetErrorManager();
-
+	
 	CImage image;
-	CImage::IImageOP::operation_param_t param;
-	CVaArray<CImage::IImageOP::OP_KIND> iops;
-
-	std::string scanfile(scan);
-	if (image.loadImage(scanfile, iops, param))
+	const CVaArray<CImage::IImageOP*>& ops = {};
+	if (image.loadImage(scan, ops))
 	{
 		if (!extracttable(image, "table.tga"))
 		{

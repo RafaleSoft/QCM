@@ -12,8 +12,8 @@
 #include "ToolBox/Imaging.h"
 #include "System/Image.h"
 
-#include "baseapi.h"
-#include "allheaders.h"
+//#include "baseapi.h"
+//#include "allheaders.h"
 
 RAPTOR_NAMESPACE
 
@@ -290,11 +290,10 @@ SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns)
 	if (0 == scan_id)
 		return 0;
 
-	CImage::IImageOP::operation_param_t param;
-	CVaArray<CImage::IImageOP::OP_KIND> iops;
+	const CVaArray<CImage::IImageOP*>& ops = {};
 
 	CImage image;
-	if (image.loadImage("table.tga", iops, param))
+	if (image.loadImage("table.tga", ops))
 	{
 		SCAN scan;
 		scan.num_answers = num_lines;
