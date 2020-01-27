@@ -30,6 +30,7 @@ class QCM:
             # load the test config if passed in
             app.config.from_mapping(test_config)
 
+        print("Latex: ", app.config['LATEX_HOME'])
         # ensure the instance folder exists
         try:
             os.makedirs(app.instance_path)
@@ -49,7 +50,6 @@ class QCM:
         from . import profile
         app.register_blueprint(profile.bp)
 
-        blog.instance_path = app.instance_path
         return app
 
     @staticmethod
