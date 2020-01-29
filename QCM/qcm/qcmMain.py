@@ -59,18 +59,6 @@ class QCM:
         def hello():
             return 'Hello, World!'
 
-        @app.route('/')
-        def index():
-            logging.debug('QCM: index')
-            st = ""
-            return render_template('status/index.html', status=st)
-
-        @app.route('/jenkins')
-        def jenkins():
-            logging.debug('Jenkins: index')
-            jks = ""
-            return render_template('status/jenkins.html', check=jks)
-
         @app.route('/favicon.ico')
         def favicon():
             return send_from_directory(os.path.join(app.root_path, 'static'),

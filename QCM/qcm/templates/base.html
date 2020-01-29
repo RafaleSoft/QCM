@@ -6,9 +6,9 @@
   <ul>
     {% if g.user %}
       <li><span>Bonjour {{ g.user['username'] }} !</span>
-      <li><a href="{{ url_for('blog.index') }}">Home</a>
-      <li><a href="{{ url_for('profile.index') }}">Profile</a>
-      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      <li><a href="{{ url_for('blog.index') }}"><img src="static/home_m.png"/></a>
+      <li><a href="{{ url_for('profile.index') }}"><img src="static/settings_m.png"/></a>
+      <li><a href="{{ url_for('auth.logout') }}"><img src="static/logout_m.png"/></a>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a>
       <li><a href="{{ url_for('auth.login') }}">Log In</a>
@@ -29,9 +29,9 @@
 
 <section class="footer">
   <footer><table><tr>
-      <td>Powered by: <a href="http://flask.pocoo.org/">Flask</a> </td>
+      <td>Powered by: <a href="http://flask.pocoo.org/"/> </td>
       <td><a href="http://flask.pocoo.org/"><img src="static/flask_small.png"/></a></td>
-      <td> and <a href="https://www.python.org/">Python 3.5</a></td>
+      <td> and <a href="https://www.python.org/"/></td>
       <td><a href="https://www.python.org/"><img src="static/python-logo.png"/></a></td>
       <td>Contact information:</td>
       <td align="right">

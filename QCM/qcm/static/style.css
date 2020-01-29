@@ -179,3 +179,10 @@ input[type=submit] {
   align-self: start;
   min-width: 10em;
 }
+
+.footer {
+  background: aliceblue;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}

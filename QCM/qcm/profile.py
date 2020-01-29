@@ -4,6 +4,8 @@ from flask import (
 
 from qcm.auth import login_required
 from qcm.db import get_db
+import csv
+import logging
 
 bp = Blueprint('profile', __name__)
 
@@ -22,7 +24,6 @@ def index():
     classes = []
     for c in cls:
         classe = {}
-        print("classe:", c['id'])
         classe['id'] = c['id']
         classe['classname'] = c['classname']
         classe['level'] = niveaux[c['level']]
@@ -119,7 +120,8 @@ def classroomUpdate(class_id):
     student = {}
     student['firstname'] = 'prenom'
     student['lastname'] = 'nom'
-    return render_template('profile/classroom_update.html', classe=classe, eleve=student, title="Ajouter élève à la classe")
+    return render_template('profile/classroom_update.html', classe=classe, eleve=student,
+                           title="Ajouter élève à la classe")
 
 
 @bp.route('/<int:student_id>/editStudent', methods=('GET', 'POST'))
@@ -179,7 +181,46 @@ def deleteClassroom(class_id):
     return redirect(url_for('profile.index'))
 
 
+'''
+This structure pass parameters as URL subpath, but application data
+is then relative to this path, which is problematic in templates.
+
 @bp.route('/<int:class_id>/loadClassroom', methods=('GET', 'POST'))
+'''
+
+
+@bp.route('/loadClassroom', methods=('GET', 'POST'))
 @login_required
-def loadClassroom(class_id):
-    return redirect(url_for('profile.index'))
+def loadClassroom():
+    if request.method == 'POST':
+        file = request.form['file']
+        error = None
+
+        if not file:
+            error = 'Filename is required.'
+        elif not file.endswith('.csv'):
+            error = 'A CSV file is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            class_id = request.args['class_id']
+
+            with open(file) as csvDataFile:
+                csv_reader = csv.reader(csvDataFile)
+                for row in csv_reader:
+                    if len(row) >= 2:
+                        firstname = row[0]
+                        lastname = row[1]
+                        db.execute('INSERT INTO students (class_id, firstname, lastname)'
+                                   'VALUES (?, ?, ?)',
+                                   (class_id, firstname, lastname))
+                    else:
+                        logging.warning("Invalid line found in csv input file")
+
+            db.commit()
+
+        return redirect(url_for('profile.index'))
+
+    return render_template('profile/opendatafile.html')
