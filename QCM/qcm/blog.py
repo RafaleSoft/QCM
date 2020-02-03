@@ -6,7 +6,10 @@ from werkzeug.exceptions import abort
 from qcm.auth import login_required
 from qcm.db import get_db
 from qcm.qcm import txt2qcm, qcm2tex
+
 import os
+import pyscan
+
 
 bp = Blueprint('blog', __name__)
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
@@ -15,6 +18,7 @@ niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cin
 TODO: tester:
 https://www.w3schools.com/csSref/tryit.asp?filename=trycss_sel_hover_dropdown
 '''
+
 
 @bp.route('/')
 @login_required
@@ -31,7 +35,6 @@ def index():
             'SELECT * FROM students'
             ' WHERE class_id = ?', (c['id'],)
         ).fetchall()
-        print('eleves:', len(els))
         classe['eleves'] = len(els)
 
         evals = db.execute(
@@ -51,9 +54,9 @@ def index():
     return render_template('blog/index.html', classes=classes)
 
 
-@bp.route('/<int:class_id>/genevaluation', methods=('GET', 'POST'))
+@bp.route('/genevaluation', methods=('GET', 'POST'))
 @login_required
-def genevaluation(class_id):
+def genevaluation():
     if request.method == 'POST':
         file = request.form['file']
         date = request.form['date']
@@ -67,33 +70,37 @@ def genevaluation(class_id):
         if error is not None:
             flash(error)
         else:
-            '''
-            db = get_db()
-            db.execute(
-                'INSERT INTO post (title, body, author_id)'
-                ' VALUES (?, ?, ?)',
-                (title, body, g.user['id'])
-            )
-            db.commit()
-            '''
-
+            class_id = request.args['class_id']
             db = get_db()
             els = db.execute(
                 'SELECT * FROM students'
                 ' WHERE class_id = ?', (class_id,)
             ).fetchall()
 
-            base_path = os.path.join(current_app.instance_path, str(class_id))
+            eleves = []
+            for e in els:
+                eleves.append([e['lastname'], e['firstname']])
+                pyscan.qrgen(e['lastname'] + "-" + e['firstname'])
+
+            base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
             filename = os.path.join(base_path, file)
-            print('class id:', class_id)
-            print('path:', filename)
             questions = txt2qcm(filename)
             if len(questions) > 0:
-                qcm2tex(questions, len(els), base_path)
-                os.system(current_app.config['LATEX_HOME'] + 'pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'sujet.tex'))
-                os.system(current_app.config['LATEX_HOME'] + 'pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'reponse.tex'))
+                qcm2tex(questions, len(els), base_path, eleves)
+                base_cmd = current_app.config['LATEX_HOME'] + 'bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' '
+                os.system(base_cmd + os.path.join(base_path, 'sujet.tex'))
+                os.system(base_cmd + os.path.join(base_path, 'reponse.tex'))
 
             return redirect(url_for('blog.index'))
+
+    return render_template('blog/opendatafile.html')
+
+
+@bp.route('/scanevaluation', methods=('GET', 'POST'))
+@login_required
+def scanevaluation():
+    if request.method == 'POST':
+        return redirect(url_for('blog.index'))
 
     return render_template('blog/opendatafile.html')
 

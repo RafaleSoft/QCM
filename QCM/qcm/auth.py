@@ -1,10 +1,10 @@
 import functools
+import os
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
 from qcm.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -57,6 +57,14 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
+
+            # ensure the user folder exists
+            try:
+                users_path = os.path.join(current_app.instance_path, 'users')
+                os.makedirs(os.path.join(users_path, str(user['id'])))
+            except OSError:
+                pass
+
             return redirect(url_for('index'))
 
         flash(error)

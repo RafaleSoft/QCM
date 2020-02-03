@@ -30,10 +30,11 @@ class QCM:
             # load the test config if passed in
             app.config.from_mapping(test_config)
 
-        print("Latex: ", app.config['LATEX_HOME'])
         # ensure the instance folder exists
         try:
             os.makedirs(app.instance_path)
+            os.makedirs(os.path.join(app.instance_path, 'users'))
+            os.makedirs(os.path.join(app.instance_path, 'archives'))
         except OSError:
             pass
 
