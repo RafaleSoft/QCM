@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\ccutil\ambigs.cpp" />
+    <ClCompile Include="..\..\src\ccutil\bitvector.cpp" />
+    <ClCompile Include="..\..\src\ccutil\ccutil.cpp" />
+    <ClCompile Include="..\..\src\ccutil\clst.cpp" />
+    <ClCompile Include="..\..\src\ccutil\elst.cpp" />
+    <ClCompile Include="..\..\src\ccutil\elst2.cpp" />
+    <ClCompile Include="..\..\src\ccutil\errcode.cpp" />
+    <ClCompile Include="..\..\src\ccutil\globaloc.cpp" />
+    <ClCompile Include="..\..\src\ccutil\indexmapbidi.cpp" />
+    <ClCompile Include="..\..\src\ccutil\mainblk.cpp" />
+    <ClCompile Include="..\..\src\ccutil\params.cpp" />
+    <ClCompile Include="..\..\src\ccutil\scanutils.cpp" />
+    <ClCompile Include="..\..\src\ccutil\serialis.cpp" />
+    <ClCompile Include="..\..\src\ccutil\strngs.cpp" />
+    <ClCompile Include="..\..\src\ccutil\tessdatamanager.cpp" />
+    <ClCompile Include="..\..\src\ccutil\tprintf.cpp" />
+    <ClCompile Include="..\..\src\ccutil\unichar.cpp" />
+    <ClCompile Include="..\..\src\ccutil\unicharcompress.cpp" />
+    <ClCompile Include="..\..\src\ccutil\unicharmap.cpp" />
+    <ClCompile Include="..\..\src\ccutil\unicharset.cpp" />
+    <ClCompile Include="..\..\src\ccutil\unicodes.cpp" />
+    <ClCompile Include="..\..\src\ccutil\universalambigs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\ccutil\ambigs.h" />
+    <ClInclude Include="..\..\src\ccutil\bits16.h" />
+    <ClInclude Include="..\..\src\ccutil\bitvector.h" />
+    <ClInclude Include="..\..\src\ccutil\ccutil.h" />
+    <ClInclude Include="..\..\src\ccutil\clst.h" />
+    <ClInclude Include="..\..\src\ccutil\doubleptr.h" />
+    <ClInclude Include="..\..\src\ccutil\elst.h" />
+    <ClInclude Include="..\..\src\ccutil\elst2.h" />
+    <ClInclude Include="..\..\src\ccutil\errcode.h" />
+    <ClInclude Include="..\..\src\ccutil\fileerr.h" />
+    <ClInclude Include="..\..\src\ccutil\genericheap.h" />
+    <ClInclude Include="..\..\src\ccutil\genericvector.h" />
+    <ClInclude Include="..\..\src\ccutil\globaloc.h" />
+    <ClInclude Include="..\..\src\ccutil\helpers.h" />
+    <ClInclude Include="..\..\src\ccutil\host.h" />
+    <ClInclude Include="..\..\src\ccutil\indexmapbidi.h" />
+    <ClInclude Include="..\..\src\ccutil\kdpair.h" />
+    <ClInclude Include="..\..\src\ccutil\lsterr.h" />
+    <ClInclude Include="..\..\src\ccutil\object_cache.h" />
+    <ClInclude Include="..\..\src\ccutil\ocrclass.h" />
+    <ClInclude Include="..\..\src\ccutil\params.h" />
+    <ClInclude Include="..\..\src\ccutil\platform.h" />
+    <ClInclude Include="..\..\src\ccutil\qrsequence.h" />
+    <ClInclude Include="..\..\src\ccutil\scanutils.h" />
+    <ClInclude Include="..\..\src\ccutil\serialis.h" />
+    <ClInclude Include="..\..\src\ccutil\sorthelper.h" />
+    <ClInclude Include="..\..\src\ccutil\strngs.h" />
+    <ClInclude Include="..\..\src\ccutil\tessdatamanager.h" />
+    <ClInclude Include="..\..\src\ccutil\tprintf.h" />
+    <ClInclude Include="..\..\src\ccutil\unichar.h" />
+    <ClInclude Include="..\..\src\ccutil\unicharcompress.h" />
+    <ClInclude Include="..\..\src\ccutil\unicharmap.h" />
+    <ClInclude Include="..\..\src\ccutil\unicharset.h" />
+    <ClInclude Include="..\..\src\ccutil\unicity_table.h" />
+    <ClInclude Include="..\..\src\ccutil\unicodes.h" />
+    <ClInclude Include="..\..\src\ccutil\universalambigs.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{44BD14C8-CCD8-4DE9-A46A-B59378BF7F25}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tesseract_ccutil</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\vstudio\tesseract_port;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src\vstudio\tesseract_port;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

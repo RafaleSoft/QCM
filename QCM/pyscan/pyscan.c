@@ -355,7 +355,10 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
         wpng_info.pnmtype = 5;
 
         if (0 == write_png(&wpng_info, qrcode))
+        {
+            printf("QR code qr3.png généré.\n");
             return Py_None;
+        }
         else
         {
             printf("Echec de l'export du QR code\n");

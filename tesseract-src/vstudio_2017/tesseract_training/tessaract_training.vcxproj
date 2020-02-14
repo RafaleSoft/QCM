@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\training\ambiguous_words.cpp" />
+    <ClCompile Include="..\..\src\training\boxchar.cpp" />
+    <ClCompile Include="..\..\src\training\classifier_tester.cpp" />
+    <ClCompile Include="..\..\src\training\cntraining.cpp" />
+    <ClCompile Include="..\..\src\training\combine_lang_model.cpp" />
+    <ClCompile Include="..\..\src\training\combine_tessdata.cpp" />
+    <ClCompile Include="..\..\src\training\commandlineflags.cpp" />
+    <ClCompile Include="..\..\src\training\commontraining.cpp" />
+    <ClCompile Include="..\..\src\training\ctc.cpp" />
+    <ClCompile Include="..\..\src\training\dawg2wordlist.cpp" />
+    <ClCompile Include="..\..\src\training\degradeimage.cpp" />
+    <ClCompile Include="..\..\src\training\errorcounter.cpp" />
+    <ClCompile Include="..\..\src\training\fileio.cpp" />
+    <ClCompile Include="..\..\src\training\icuerrorcode.cpp" />
+    <ClCompile Include="..\..\src\training\intfeaturedist.cpp" />
+    <ClCompile Include="..\..\src\training\intfeaturemap.cpp" />
+    <ClCompile Include="..\..\src\training\lang_model_helpers.cpp" />
+    <ClCompile Include="..\..\src\training\ligature_table.cpp" />
+    <ClCompile Include="..\..\src\training\lstmeval.cpp" />
+    <ClCompile Include="..\..\src\training\lstmtester.cpp" />
+    <ClCompile Include="..\..\src\training\lstmtrainer.cpp" />
+    <ClCompile Include="..\..\src\training\lstmtraining.cpp" />
+    <ClCompile Include="..\..\src\training\mastertrainer.cpp" />
+    <ClCompile Include="..\..\src\training\mergenf.cpp" />
+    <ClCompile Include="..\..\src\training\merge_unicharsets.cpp" />
+    <ClCompile Include="..\..\src\training\mftraining.cpp" />
+    <ClCompile Include="..\..\src\training\networkbuilder.cpp" />
+    <ClCompile Include="..\..\src\training\normstrngs.cpp" />
+    <ClCompile Include="..\..\src\training\pango_font_info.cpp" />
+    <ClCompile Include="..\..\src\training\sampleiterator.cpp" />
+    <ClCompile Include="..\..\src\training\set_unicharset_properties.cpp" />
+    <ClCompile Include="..\..\src\training\shapeclustering.cpp" />
+    <ClCompile Include="..\..\src\training\stringrenderer.cpp" />
+    <ClCompile Include="..\..\src\training\tessopt.cpp" />
+    <ClCompile Include="..\..\src\training\text2image.cpp" />
+    <ClCompile Include="..\..\src\training\tlog.cpp" />
+    <ClCompile Include="..\..\src\training\trainingsampleset.cpp" />
+    <ClCompile Include="..\..\src\training\unicharset_extractor.cpp" />
+    <ClCompile Include="..\..\src\training\unicharset_training_utils.cpp" />
+    <ClCompile Include="..\..\src\training\validate_grapheme.cpp" />
+    <ClCompile Include="..\..\src\training\validate_indic.cpp" />
+    <ClCompile Include="..\..\src\training\validate_javanese.cpp" />
+    <ClCompile Include="..\..\src\training\validate_khmer.cpp" />
+    <ClCompile Include="..\..\src\training\validate_myanmar.cpp" />
+    <ClCompile Include="..\..\src\training\validator.cpp" />
+    <ClCompile Include="..\..\src\training\wordlist2dawg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\training\boxchar.h" />
+    <ClInclude Include="..\..\src\training\commandlineflags.h" />
+    <ClInclude Include="..\..\src\training\commontraining.h" />
+    <ClInclude Include="..\..\src\training\ctc.h" />
+    <ClInclude Include="..\..\src\training\degradeimage.h" />
+    <ClInclude Include="..\..\src\training\errorcounter.h" />
+    <ClInclude Include="..\..\src\training\fileio.h" />
+    <ClInclude Include="..\..\src\training\icuerrorcode.h" />
+    <ClInclude Include="..\..\src\training\intfeaturedist.h" />
+    <ClInclude Include="..\..\src\training\intfeaturemap.h" />
+    <ClInclude Include="..\..\src\training\lang_model_helpers.h" />
+    <ClInclude Include="..\..\src\training\ligature_table.h" />
+    <ClInclude Include="..\..\src\training\lstmtester.h" />
+    <ClInclude Include="..\..\src\training\lstmtrainer.h" />
+    <ClInclude Include="..\..\src\training\mastertrainer.h" />
+    <ClInclude Include="..\..\src\training\mergenf.h" />
+    <ClInclude Include="..\..\src\training\networkbuilder.h" />
+    <ClInclude Include="..\..\src\training\normstrngs.h" />
+    <ClInclude Include="..\..\src\training\pango_font_info.h" />
+    <ClInclude Include="..\..\src\training\sampleiterator.h" />
+    <ClInclude Include="..\..\src\training\stringrenderer.h" />
+    <ClInclude Include="..\..\src\training\tessopt.h" />
+    <ClInclude Include="..\..\src\training\tlog.h" />
+    <ClInclude Include="..\..\src\training\trainingsampleset.h" />
+    <ClInclude Include="..\..\src\training\unicharset_training_utils.h" />
+    <ClInclude Include="..\..\src\training\util.h" />
+    <ClInclude Include="..\..\src\training\validate_grapheme.h" />
+    <ClInclude Include="..\..\src\training\validate_indic.h" />
+    <ClInclude Include="..\..\src\training\validate_javanese.h" />
+    <ClInclude Include="..\..\src\training\validate_khmer.h" />
+    <ClInclude Include="..\..\src\training\validate_myanmar.h" />
+    <ClInclude Include="..\..\src\training\validator.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{598A50DE-7880-46BB-A0B5-D134D1FDF824}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>tessaract_training</RootNamespace>
+    <ProjectName>tesseract_training</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src;$(SolutionDir)tesseract-src\vstudio\tesseract_port;$(SolutionDir)tesseract-src\src\arch;$(SolutionDir)tesseract-src\src\textord;$(SolutionDir)tesseract-src\src\wordrec;$(SolutionDir)tesseract-src\src\lstm;$(SolutionDir)tesseract-src\src\ccmain;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\api;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\classify;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)tesseract-src;$(SolutionDir)tesseract-src\vstudio\tesseract_port;$(SolutionDir)tesseract-src\src\arch;$(SolutionDir)tesseract-src\src\textord;$(SolutionDir)tesseract-src\src\wordrec;$(SolutionDir)tesseract-src\src\lstm;$(SolutionDir)tesseract-src\src\ccmain;$(SolutionDir)tesseract-src\src\cutil;$(SolutionDir)tesseract-src\src\viewer;$(SolutionDir)tesseract-src\src\ccstruct;$(SolutionDir)tesseract-src\src\dict;$(SolutionDir)leptonica-1.78.0\src;$(SolutionDir)tesseract-src\src\api;$(SolutionDir)tesseract-src\src\ccutil;$(SolutionDir)tesseract-src\src\classify;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
