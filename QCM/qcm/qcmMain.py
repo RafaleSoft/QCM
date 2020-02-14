@@ -30,6 +30,7 @@ class QCM:
             # load the test config if passed in
             app.config.from_mapping(test_config)
 
+        print("Latex: ", app.config['LATEX_HOME'])
         # ensure the instance folder exists
         try:
             os.makedirs(app.instance_path)
@@ -49,7 +50,6 @@ class QCM:
         from . import profile
         app.register_blueprint(profile.bp)
 
-        blog.instance_path = app.instance_path
         return app
 
     @staticmethod
@@ -58,18 +58,6 @@ class QCM:
         @app.route('/hello')
         def hello():
             return 'Hello, World!'
-
-        @app.route('/')
-        def index():
-            logging.debug('QCM: index')
-            st = ""
-            return render_template('status/index.html', status=st)
-
-        @app.route('/jenkins')
-        def jenkins():
-            logging.debug('Jenkins: index')
-            jks = ""
-            return render_template('status/jenkins.html', check=jks)
 
         @app.route('/favicon.ico')
         def favicon():

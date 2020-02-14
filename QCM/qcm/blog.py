@@ -9,9 +9,12 @@ from qcm.qcm import txt2qcm, qcm2tex
 import os
 
 bp = Blueprint('blog', __name__)
-instance_path = ''
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
 
+'''
+TODO: tester:
+https://www.w3schools.com/csSref/tryit.asp?filename=trycss_sel_hover_dropdown
+'''
 
 @bp.route('/')
 @login_required
@@ -80,15 +83,15 @@ def genevaluation(class_id):
                 ' WHERE class_id = ?', (class_id,)
             ).fetchall()
 
-            base_path = os.path.join(instance_path, str(class_id))
+            base_path = os.path.join(current_app.instance_path, str(class_id))
             filename = os.path.join(base_path, file)
             print('class id:', class_id)
             print('path:', filename)
             questions = txt2qcm(filename)
             if len(questions) > 0:
                 qcm2tex(questions, len(els), base_path)
-                os.system('D:\\texlive\\2019\\bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'sujet.tex'))
-                os.system('D:\\texlive\\2019\\bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'reponse.tex'))
+                os.system(current_app.config['LATEX_HOME'] + 'pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'sujet.tex'))
+                os.system(current_app.config['LATEX_HOME'] + 'pdflatex.exe -output-directory=' + base_path + ' ' + os.path.join(base_path, 'reponse.tex'))
 
             return redirect(url_for('blog.index'))
 

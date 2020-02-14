@@ -30,10 +30,8 @@ def register():
         if error is None:
             firstname = ''
             lastname = ''
-            db.execute(
-                'INSERT INTO users (username, password, firstname, lastname) VALUES (?, ?, ?, ?)',
-                (username, generate_password_hash(password), firstname, lastname)
-            )
+            db.execute('INSERT INTO users (username, password, firstname, lastname) VALUES (?, ?, ?, ?)',
+                        (username, generate_password_hash(password), firstname, lastname))
             db.commit()
             return redirect(url_for('auth.login'))
 
@@ -49,9 +47,7 @@ def login():
         password = request.form['password']
         db = get_db()
         error = None
-        user = db.execute(
-            'SELECT * FROM users WHERE username = ?', (username,)
-        ).fetchone()
+        user = db.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
 
         if user is None:
             error = 'Incorrect username.'
@@ -75,14 +71,13 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-            'SELECT * FROM users WHERE id = ?', (user_id,)
-        ).fetchone()
+        g.user = get_db().execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
 
 
 @bp.route('/logout')
 def logout():
     session.clear()
+    g.user = None
     return redirect(url_for('index'))
 
 
