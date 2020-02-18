@@ -5,17 +5,15 @@
 #include <math.h>
 #include "scan.h"
 
-#include "Subsys/CodeGeneration.h"
-#include "System/RaptorConfig.h"
-#include "System/RaptorErrorManager.h"
-
-#include "ToolBox/Imaging.h"
-#include "System/Image.h"
+#include "Image.h"
+#include "Color.h"
+#include <iostream>
 
 //	Global data
 extern std::vector<SCAN>	global_scans;
 extern CImage				*current_scan;
 
+const float PI = 3.1415926535;
 
 const size_t RECTIFY_WIDTH = 1700;
 const size_t RECTIFY_HEIGHT = 2338;
@@ -476,7 +474,7 @@ int getPixelDiffs(uint8_t *pixels, size_t w, size_t h, float l1, int x2, int y2)
 	CColor::RGBA c2 = CColor::RGBA((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
 
 	//float l1 = c1.operator raptor::CColor::YUVA().y;
-	float l2 = c2.operator raptor::CColor::YUVA().y;
+	float l2 = c2.operator CColor::YUVA().y;
 
 	return 255 * (l2 - l1);
 }
@@ -504,10 +502,12 @@ bool checkIsLine(std::vector<int> &X, std::vector<int> &Y)
 		if (LINE_THRESHOLD < delta)
 		{
 			is_line = false;
+			/*
 			CRaptorErrorManager *mgr = Raptor::GetErrorManager();
 			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
 									 CRaptorErrorManager::RAPTOR_FATAL,
 									 "Axe de ligne supérieur à la limite.");
+									 */
 		}
 	}
 
@@ -550,7 +550,7 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 			uint8_t g = pixels[offset + 1];
 			uint8_t b = pixels[offset + 2];
 			CColor::RGBA c1 = CColor::RGBA((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
-			float l1 = c1.operator raptor::CColor::YUVA().y;
+			float l1 = c1.operator CColor::YUVA().y;
 
 			// do not go backwards: limit to 5 possible steps.
 			for (size_t i = 0; i < 5; i++)
@@ -765,10 +765,8 @@ int histogram_scan(size_t px, size_t py, size_t width, size_t height)
 
 SCAN_API int rectify_scan(const char* scan)
 {
-	CRaptorErrorManager *mgr = Raptor::GetErrorManager();
-
 	CImage image;
-	const CVaArray<CImage::IImageOP*>& ops = {};
+	const std::vector<CImage::IImageOP*>& ops = {};
 
 	std::string scanfile(scan);
 	if (image.loadImage(scan, ops))
@@ -866,9 +864,11 @@ SCAN_API int rectify_scan(const char* scan)
 	}
 	else
 	{
+		/*
 		mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
 								 CRaptorErrorManager::RAPTOR_FATAL,
 								 "Impossible d'ouvrir l'image source");
+								 */
 		return 0;
 	}
 }

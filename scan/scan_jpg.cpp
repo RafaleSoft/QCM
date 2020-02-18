@@ -5,17 +5,9 @@
 #include "process.h"
 #include "scan.h"
 
-#include "Subsys/CodeGeneration.h"
-#include "System/RaptorConfig.h"
-#include "System/RaptorErrorManager.h"
+#include "Image.h"
 
-#include "ToolBox/Imaging.h"
-#include "System/Image.h"
-
-//#include "baseapi.h"
-//#include "allheaders.h"
-
-RAPTOR_NAMESPACE
+#include <sstream>
 
 //	Global data
 extern std::vector<SCAN> global_scans;
@@ -290,7 +282,7 @@ SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns)
 	if (0 == scan_id)
 		return 0;
 
-	const CVaArray<CImage::IImageOP*>& ops = {};
+	const std::vector<CImage::IImageOP*>& ops = {};
 
 	CImage image;
 	if (image.loadImage("table.tga", ops))
@@ -349,11 +341,13 @@ SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns)
 						{
 							std::stringstream msg;
 							msg << "Questionnaire " << scan_id << " incorrect: plusieurs reponses donnees à la question ";
-							msg << l + 1 << ends;
+							msg << l + 1 << std::ends;
 
+							/*
 							CRaptorErrorManager *mgr = Raptor::GetErrorManager();
 							mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
 													 CRaptorErrorManager::RAPTOR_ERROR, msg.str());
+													 */
 
 							answer = 0;
 							//	If multiple answers, abort current line.
@@ -372,11 +366,13 @@ SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns)
 					msg << "Questionnaire " << scan_id << " incomplet, ";
 					msg << "Pas de reponse trouvée à la question ";
 					msg << l + 1;
-					msg << ". Estimation max: " << max_value << " / " << max_ref << ends;
+					msg << ". Estimation max: " << max_value << " / " << max_ref << std::ends;
 
+					/*
 					CRaptorErrorManager *mgr = Raptor::GetErrorManager();
 					mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
 											 CRaptorErrorManager::RAPTOR_ERROR, msg.str());
+											 */
 				}
 
 				// Store question
