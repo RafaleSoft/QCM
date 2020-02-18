@@ -8,7 +8,7 @@ from qcm.db import get_db
 from qcm.qcm import txt2qcm, qcm2tex
 
 import os
-import pyscan
+from pyscan import qrgen
 
 
 bp = Blueprint('blog', __name__)
@@ -80,7 +80,7 @@ def genevaluation():
             eleves = []
             for e in els:
                 eleves.append([e['lastname'], e['firstname']])
-                pyscan.qrgen(e['lastname'] + "-" + e['firstname'])
+                qrgen(e['lastname'] + "-" + e['firstname'])
 
             base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
             filename = os.path.join(base_path, file)

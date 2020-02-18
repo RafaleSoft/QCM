@@ -5,10 +5,14 @@
 // SCAN_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 
-#ifdef SCAN_EXPORTS
-	#define SCAN_API __declspec(dllexport)
+#ifdef WIN32
+	#ifdef SCAN_EXPORTS
+		#define SCAN_API __declspec(dllexport)
+	#else
+		#define SCAN_API __declspec(dllimport)
+	#endif
 #else
-	#define SCAN_API __declspec(dllimport)
+	#define SCAN_API
 #endif
 
 #include <stdint.h>

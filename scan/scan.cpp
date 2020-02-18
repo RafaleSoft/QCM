@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "process.h"
 #include "scan.h"
 
 #include "Subsys/CodeGeneration.h"

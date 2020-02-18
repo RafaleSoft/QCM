@@ -4,10 +4,15 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // QRGEN_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#ifdef QRGEN_EXPORTS
-#define QRGEN_API __declspec(dllexport)
+
+#ifdef WIN32
+	#ifdef QRGEN_EXPORTS
+		#define QRGEN_API __declspec(dllexport)
+	#else
+		#define QRGEN_API __declspec(dllimport)
+	#endif
 #else
-#define QRGEN_API __declspec(dllimport)
+	#define QRGEN_API
 #endif
 
 

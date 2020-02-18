@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "QR-Code-generator/c/qrcodegen.h"
 #include "qrgen.h"
-#include "QR-Code-generator\c\qrcodegen.h"
 
 #include "zlib.h"
 #include "png.h"

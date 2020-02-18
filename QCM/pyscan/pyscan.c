@@ -6,8 +6,8 @@
 
 //! Png Interface
 #include <setjmp.h>
-#include "../../zlib-1.2.11/include/zlib.h"
-#include "../../libpng-1.6.36/include/png.h"
+#include "zlib.h"
+#include "png.h"
 
 //! QR code interfaces
 #include "../../qrgen/QR-Code-generator/c/qrcodegen.h"
@@ -173,6 +173,9 @@ int write_png(mainprog_info *wpng_info, uint8_t qrcode[])
 
 	writepng_cleanup(wpng_info);
 	wpng_cleanup(wpng_info);
+
+	fprintf(stderr, "Cleanup.\n");
+	fflush(stderr);
 
 	return 0;
 }
@@ -397,7 +400,7 @@ PyMODINIT_FUNC PyInit_pyscan(void)
                     1, qrgen_version());
 
     if (0 == init_scan())
-        fprintf(stderr, "   Failed to initialize scan library.\n");
+        fprintf(stderr, "   Failed to initialize scan library. Please restart.\n");
 
 	return PyModule_Create(&myModule);
 }
