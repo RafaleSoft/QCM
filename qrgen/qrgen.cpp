@@ -5,9 +5,6 @@
 #include "QR-Code-generator/c/qrcodegen.h"
 #include "qrgen.h"
 
-#include "zlib.h"
-#include "png.h"
-
 
 QRGEN_API bool qrgen_getModule(const unsigned char qrcode[], int x, int y)
 {

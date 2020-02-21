@@ -120,6 +120,11 @@ typedef struct _mainprog_info {
 
 /* prototypes for public functions in writepng.c */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 void writepng_version_info(void);
 
 int writepng_init(mainprog_info *mainprog_ptr);
@@ -131,3 +136,7 @@ int writepng_encode_row(mainprog_info *mainprog_ptr);
 int writepng_encode_finish(mainprog_info *mainprog_ptr);
 
 void writepng_cleanup(mainprog_info *mainprog_ptr);
+
+#ifdef __cplusplus
+}
+#endif

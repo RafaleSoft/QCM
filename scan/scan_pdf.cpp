@@ -291,7 +291,7 @@ bool sobel(CImage& in)
 }
 
 
-SCAN_API int resize_scan(CImage& image, size_t newW, size_t newH)
+int resize_scan(CImage& image, size_t newW, size_t newH)
 {
 	uint8_t *pixels = image.getPixels();
 	if (NULL != pixels)

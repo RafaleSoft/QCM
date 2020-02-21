@@ -5,7 +5,7 @@
 #include "../../scan/scan.h"
 
 //! Png Interface
-#include <setjmp.h>
+//#include <setjmp.h>
 #include "zlib.h"
 #include "png.h"
 
@@ -26,7 +26,7 @@ static PyObject* helloworld(PyObject* self, PyObject* args)
 	return Py_None;
 }
 
-
+/*
 void wpng_cleanup(mainprog_info *wpng_info)
 {
 	if (wpng_info->outfile)
@@ -134,7 +134,7 @@ int write_png(mainprog_info *wpng_info, uint8_t qrcode[])
 		rowbytes = wpng_info->width;
 	else if (wpng_info->pnmtype == 6)
 		rowbytes = wpng_info->width * 3;
-	else /* if (wpng_info.pnmtype == 8) */
+	else // if (wpng_info.pnmtype == 8)
 		rowbytes = wpng_info->width * 4;
 
 
@@ -166,20 +166,20 @@ int write_png(mainprog_info *wpng_info, uint8_t qrcode[])
 		}
 	}
 
-	/* OK, we're done (successfully):  clean up all resources and quit */
+	// OK, we're done (successfully):  clean up all resources and quit
 
 	fprintf(stderr, "Done.\n");
 	fflush(stderr);
 
-	writepng_cleanup(wpng_info);
 	wpng_cleanup(wpng_info);
+	writepng_cleanup(wpng_info);
 
 	fprintf(stderr, "Cleanup.\n");
 	fflush(stderr);
 
 	return 0;
 }
-
+*/
 struct result_info
 {
 	int		file_count;
@@ -303,14 +303,17 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
 {
     const char *text = NULL;
     Py_ssize_t textlen = 0;
+    const char *path = NULL;
+    Py_ssize_t pathlen = 0;
 
-    if(!PyArg_ParseTuple(args, "s#", &text, &textlen))
+    if(!PyArg_ParseTuple(args, "s#s#", &text, &textlen, &path, &pathlen))
         return NULL;
-    if (NULL == text)
+    if ((NULL == text) || (NULL == path))
         return NULL;
 
     printf("Generation QR-code pour: %s\n",text);
-
+    printf("Generation QR-code filepath: %s\n",path);
+	/*
     uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
 
 	// Make and print the QR Code symbol
@@ -334,7 +337,7 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
 
 	    int size = qrgen_getSize(qrcode);
 
-        mainprog_info wpng_info;   /* lone global */
+        mainprog_info wpng_info;   // lone global
         memset(&wpng_info, 0, sizeof(mainprog_info));
         wpng_info.interlaced = TRUE;
         wpng_info.modtime = time(NULL);
@@ -354,12 +357,14 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
         wpng_info.have_text |= TEXT_EMAIL;
         wpng_info.url = "http://github.com/RafaleSoft";
         wpng_info.have_text |= TEXT_URL;
-        wpng_info.outfile = fopen("qr3.png", "wb");
+        wpng_info.outfile = fopen(path, "wb");
         wpng_info.pnmtype = 5;
-
+		
         if (0 == write_png(&wpng_info, qrcode))
+		*/
+		if (1 == export_png_qrcode(text, path))
         {
-            printf("QR code qr3.png généré.\n");
+            printf("QR code %s généré.\n", path);
             return Py_None;
         }
         else
@@ -367,7 +372,7 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
             printf("Echec de l'export du QR code\n");
             return NULL;
         }
-    }
+    //}
 }
 
 // Our Module's Function Definition struct

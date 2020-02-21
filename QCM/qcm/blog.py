@@ -77,12 +77,14 @@ def genevaluation():
                 ' WHERE class_id = ?', (class_id,)
             ).fetchall()
 
+            base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
             eleves = []
+            i = 0
             for e in els:
                 eleves.append([e['lastname'], e['firstname']])
-                qrgen(e['lastname'] + "-" + e['firstname'])
+                qrgen(e['lastname'] + "-" + e['firstname'], base_path+'\\qr'+str(i)+'.png')
+                i = i + 1
 
-            base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
             filename = os.path.join(base_path, file)
             questions = txt2qcm(filename)
             if len(questions) > 0:

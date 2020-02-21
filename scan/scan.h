@@ -52,11 +52,11 @@ SCAN_API int open_doc(const char* doc);
 //	Orthorectify the current opened scan
 SCAN_API int rectify_scan(const char* scan);
 
-//	Resize the current opened scan
-SCAN_API int resize_scan(const char* scan, size_t newW, size_t newH);
-
 //	Releases all the resources allocated by open_doc calls.
 SCAN_API int close_doc();
+
+//	Write a PNG file with qrcode data.
+SCAN_API int export_png_qrcode(const char *payload, const char *path);
 
 
 

@@ -217,8 +217,10 @@ def qcm2tex(qcm, n, path, eleves, sol=False, cor=False):
             if i > 1:
                 f.write('\\newpage\n')
 
-            f.write('\\begin{minipage}{0.15\\linewidth}\n')
-            f.write('\\includegraphics[scale=0.75]{qr3.png}\n')
+            qr = os.path.join(path, 'qr'+str(i-1)+'.png')
+
+            f.write('\\noindent\\begin{minipage}{0.15\\linewidth}\n')
+            f.write('\\includegraphics[scale=0.75]{' + qr.replace('\\','/') + '}\n')
             f.write('\\end{minipage}\\hfill\n')
             f.write('\\begin{minipage}{0.8\\linewidth}\n')
             f.write('\\dotfill Mathématiques\\dotfill Evaluation, durée : $1$h   \\dotfill 2019-2020.\n')
