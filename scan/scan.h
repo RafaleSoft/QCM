@@ -44,7 +44,7 @@ SCAN_API int open_scan(const char* scan);
 SCAN_API int close_scan();
 
 //	Extract QCM answers from current (last) opened scan.
-SCAN_API int extract_scan_fills(size_t num_lines, size_t num_columns);
+SCAN_API int extract_scan_fills(uint32_t num_lines, uint32_t num_columns);
 
 //	Open a pdf document with multiple QCM scans (1 per page)
 SCAN_API int open_doc(const char* doc);
@@ -58,6 +58,10 @@ SCAN_API int close_doc();
 //	Write a PNG file with qrcode data.
 SCAN_API int export_png_qrcode(const char *payload, const char *path);
 
+//	Read a PNG or JPEG file and extract qrcode data.
+SCAN_API char* read_qrcode(const char *path);
+
+
 
 
 typedef struct QCM_Answer_t
@@ -69,7 +73,7 @@ typedef struct QCM_Answer_t
 typedef struct SCAN_t
 {
 	uint32_t	scan_id;
-	size_t		num_answers;
+	uint32_t	num_answers;
 	QCM_Answer	*answers;
 } SCAN;
 

@@ -4,10 +4,15 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // QUIRC_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#ifdef QUIRC_EXPORTS
-#define QUIRC_API __declspec(dllexport)
+
+#ifdef WIN32
+	#ifdef QUIRC_EXPORTS
+		#define QUIRC_API __declspec(dllexport)
+	#else
+		#define QUIRC_API __declspec(dllimport)
+	#endif
 #else
-#define QUIRC_API __declspec(dllimport)
+	#define QUIRC_API 
 #endif
 
 #ifdef __cplusplus

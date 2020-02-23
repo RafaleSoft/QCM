@@ -77,6 +77,9 @@ def genevaluation():
                 ' WHERE class_id = ?', (class_id,)
             ).fetchall()
 
+            '''
+                Generate a QR code for each student
+            '''
             base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
             eleves = []
             i = 0
@@ -85,6 +88,9 @@ def genevaluation():
                 qrgen(e['lastname'] + "-" + e['firstname'], base_path+'\\qr'+str(i)+'.png')
                 i = i + 1
 
+            '''
+                Generate a pdf files
+            '''
             filename = os.path.join(base_path, file)
             questions = txt2qcm(filename)
             if len(questions) > 0:
@@ -92,6 +98,20 @@ def genevaluation():
                 base_cmd = current_app.config['LATEX_HOME'] + 'bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' '
                 os.system(base_cmd + os.path.join(base_path, 'sujet.tex'))
                 os.system(base_cmd + os.path.join(base_path, 'reponse.tex'))
+
+            '''
+                Do some cleaning of all intermediate files
+            '''
+            i = 0
+            for e in els:
+                os.unlink(base_path + '\\qr' + str(i) + '.png')
+                i = i + 1
+            os.unlink(base_path + '\\reponse.aux')
+            os.unlink(base_path + '\\reponse.log')
+            os.unlink(base_path + '\\reponse.tex')
+            os.unlink(base_path + '\\sujet.aux')
+            os.unlink(base_path + '\\sujet.log')
+            os.unlink(base_path + '\\sujet.tex')
 
             return redirect(url_for('blog.index'))
 

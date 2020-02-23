@@ -8,8 +8,7 @@
 	#include "TIFFImaging.h"
 #endif
 
-//  tiff support
-#include "tif_config.h"
+
 #ifndef _TIFFIO_
 	#include "tiffio.h"
 #endif

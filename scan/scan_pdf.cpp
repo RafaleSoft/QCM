@@ -497,7 +497,7 @@ bool checkIsLine(std::vector<int> &X, std::vector<int> &Y)
 		float y = (float)(Y[i] - Y[0]);
 
 		float delta = fabs(x * dy * one_over_dx - y);
-		deltaMax = max(delta, deltaMax);
+		deltaMax = std::max(delta, deltaMax);
 
 		if (LINE_THRESHOLD < delta)
 		{
@@ -566,7 +566,7 @@ bool findLine(CImage& in, int x, int y, int &x2, int &y2)
 				}
 			}
 
-			maxM = max(M, maxM);
+			maxM = std::max(M, maxM);
 
 			if ((M > 60) ||									// check relative jump in luminosity
 				(X.size() > (in.getWidth() - x)) ||			// check border of image is reached

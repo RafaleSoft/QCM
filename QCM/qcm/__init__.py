@@ -1,7 +1,8 @@
 # Initialise Meteo application
+from flask import Flask
 
 import qcm.qcmMain
 
 # Global variables
 theServices = qcm.qcmMain.QCM()
-theQCM = theServices.qcm
+application: Flask = theServices.qcm

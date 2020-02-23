@@ -17,7 +17,7 @@ CColor::RGBA::operator CColor::CYMK() const
     res.y = 1 - g;
     res.m = 1 - b;
 
-    res.k = min(res.c,min(res.y,res.m));
+    res.k = std::min(res.c,std::min(res.y,res.m));
     if (res.k >= 1)
     {
         res.c = 0.0f;
@@ -91,9 +91,9 @@ CColor::RGBA::operator CColor::HSVA() const
     CColor::HSVA res;
 
 	res.a = a;
-    res.v = max(r,max(g,b));
+    res.v = std::max(r,std::max(g,b));
 	res.h = res.s = 0.0f;
-	float C = res.v - min(r,min(b,g)); 
+	float C = res.v - std::min(r,std::min(b,g)); 
 
 	if (res.v != 0)
 	{
@@ -152,8 +152,8 @@ CColor::RGBA::operator CColor::HSLA() const
 
 	res.a = a;
 	res.h = res.s = 0.0f;
-	float M = max(r,max(g,b));
-	float m = min(r,min(b,g));
+	float M = std::max(r, std::max(g,b));
+	float m = std::min(r, std::min(b,g));
 	float C = M - m;
 
 	res.l = 0.5f*(M + m);
@@ -218,8 +218,8 @@ CColor::RGBA::operator CColor::HCYA() const
 
 	res.a = a;
 	res.h = 0.0f;
-	float M = max(r,max(g,b)); 
-	res.c = M - min(r,min(b,g)); 
+	float M = std::max(r, std::max(g,b));
+	res.c = M - std::min(r, std::min(b,g));
 	res.y = 0.299 * r + 0.587 * g + 0.114 * b;
 
 	if (res.c != 0)

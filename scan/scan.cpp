@@ -2,8 +2,13 @@
 //
 
 #include "stdafx.h"
-#include "scan.h"
+
 #include <sstream>
+#include <cstring>
+#include <setjmp.h>
+#include <time.h>
+
+#include "scan.h"
 
 #include "TGAImaging.h"
 #include "JPGImaging.h"
@@ -11,12 +16,20 @@
 #include "PNGImaging.h"
 #include "Image.h"
 
-#include "../../qrgen/QR-Code-generator/c/qrcodegen.h"
-#include "../../qrgen/qrgen.h"
+//	QR code generator
+#include "../qrgen/QR-Code-generator/c/qrcodegen.h"
+#include "../qrgen/qrgen.h"
 
-#include <setjmp.h>
+//	QR code decoder
+#include "../QUIRC/quirc/lib/quirc_internal.h"
+#include "../QUIRC/quirc_api.h"
+
+
 #include "writepng.h"
-#include <time.h>
+extern int load_jpeg(struct quirc *q, const char *filename);
+extern int write_png(mainprog_info *wpng_info, uint8_t qrcode[]);
+extern int load_png(struct quirc *q, const char *filename);
+
 
 extern bool extracttable(CImage &in, const std::string &out);
 extern bool extractnum(CImage &in, const std::string &out);
@@ -27,7 +40,7 @@ std::vector<SCAN>	global_scans;
 CImage				*current_scan = NULL;
 
 
-extern SCAN_API int scan_version(void)
+SCAN_API int scan_version(void)
 {
 	return 12345;
 }
@@ -50,160 +63,6 @@ SCAN_API int release_scan(void)
 }
 
 
-void extractQr(const uint8_t qrcode[], unsigned char *image_data)
-{
-	int size = qrgen_getSize(qrcode);
-	int border = 4;
-
-	unsigned char* image_pos = image_data;
-
-	for (int y = -border; y < size + border; y++)
-	{
-		for (int t = 0; t < 4; t++)
-			for (int x = -border; x < size + border; x++)
-			{
-				bool pixel = qrgen_getModule(qrcode, x, y);
-				for (int z = 0; z < 4; z++)
-				{
-					if (pixel)
-						*image_pos = 0;
-					else
-						*image_pos = 255;
-					image_pos++;
-				}
-			}
-	}
-}
-
-void wpng_cleanup(mainprog_info *wpng_info)
-{
-	if (wpng_info->outfile)
-	{
-		fclose(wpng_info->outfile);
-		wpng_info->outfile = NULL;
-	}
-
-	if (wpng_info->infile)
-	{
-		fclose(wpng_info->infile);
-		wpng_info->infile = NULL;
-	}
-
-	if (wpng_info->image_data)
-	{
-		free(wpng_info->image_data);
-		wpng_info->image_data = NULL;
-	}
-
-	if (wpng_info->row_pointers)
-	{
-		free(wpng_info->row_pointers);
-		wpng_info->row_pointers = NULL;
-	}
-}
-
-
-int write_png(mainprog_info *wpng_info, uint8_t qrcode[])
-{
-	char *bgstr = NULL;
-	ulg rowbytes;
-	int rc, len = 0;
-	int error = 0;
-	double LUT_exponent;                // just the lookup table
-	double CRT_exponent = 2.2;          // just the monitor
-	double default_display_exponent;    // whole display system
-	double default_gamma = 0.0;
-
-	LUT_exponent = 1.0;   // assume no LUT:  most PCs
-
-	// the defaults above give 1.0, 1.3, 1.5 and 2.2, respectively:
-	default_display_exponent = LUT_exponent * CRT_exponent;
-
-	if (default_gamma == 0.0)
-		default_gamma = 1.0 / default_display_exponent;
-
-
-	// open the input and output files, or register an error and abort
-
-	wpng_info->filter = TRUE;
-
-	// allocate libpng stuff, initialize transformations, write pre-IDAT data
-
-	if ((rc = writepng_init(wpng_info)) != 0)
-	{
-		switch (rc)
-		{
-		case 2:
-			fprintf(stderr, "writepng_init Error:  libpng initialization problem (longjmp)\n");
-			break;
-		case 4:
-			fprintf(stderr, "writepng_init Error:  insufficient memory\n");
-			break;
-		case 11:
-			fprintf(stderr, "writepng_init Error:  internal logic error (unexpected PNM type)\n");
-			break;
-		default:
-			fprintf(stderr, "writepng_init Error:  unknown writepng_init() error\n");
-			break;
-		}
-
-		return -rc;
-	}
-
-	// calculate rowbytes on basis of image type; note that this becomes much
-	// more complicated if we choose to support PBM type, ASCII PNM types, or
-	// 16-bit-per-sample binary data [currently not an official NetPBM type]
-
-	if (wpng_info->pnmtype == 5)
-		rowbytes = wpng_info->width;
-	else if (wpng_info->pnmtype == 6)
-		rowbytes = wpng_info->width * 3;
-	else /* if (wpng_info.pnmtype == 8) */
-		rowbytes = wpng_info->width * 4;
-
-
-	// read and write the image, either in its entirety (if writing interlaced
-	// PNG) or row by row (if non-interlaced)
-
-	fprintf(stderr, "Encoding image data...\n");
-	fflush(stderr);
-
-	if (wpng_info->interlaced)
-	{
-		long i;
-		ulg image_bytes = rowbytes * wpng_info->height;   // overflow?
-
-		wpng_info->image_data = (uch *)malloc(image_bytes);
-		wpng_info->row_pointers = (uch **)malloc(wpng_info->height * sizeof(uch *));
-
-		for (i = 0; i < wpng_info->height; ++i)
-			wpng_info->row_pointers[i] = wpng_info->image_data + i * rowbytes;
-
-		extractQr(qrcode, wpng_info->image_data);
-
-		if (writepng_encode_image(wpng_info) != 0)
-		{
-			fprintf(stderr, "writepng_encode_image Error:  libpng problem (longjmp) while writing image data\n");
-			writepng_cleanup(wpng_info);
-			wpng_cleanup(wpng_info);
-			return -2;
-		}
-	}
-
-	/* OK, we're done (successfully):  clean up all resources and quit */
-
-	fprintf(stderr, "Done.\n");
-	fflush(stderr);
-
-	wpng_cleanup(wpng_info);
-	writepng_cleanup(wpng_info);
-
-	fprintf(stderr, "Cleanup.\n");
-	fflush(stderr);
-
-	return 0;
-}
-
 SCAN_API int export_png_qrcode(const char *payload, const char *path)
 {
 	if ((NULL == payload) || (NULL == path))
@@ -224,7 +83,7 @@ SCAN_API int export_png_qrcode(const char *payload, const char *path)
 	if (!ok)
 	{
 		printf("Echec de génération du QR code\n");
-		return NULL;
+		return 0;
 	}
 	else
 	{
@@ -240,17 +99,17 @@ SCAN_API int export_png_qrcode(const char *payload, const char *path)
 		wpng_info.sample_depth = 8;
 		wpng_info.width = 4 * (size + 2 * 4); // + border
 		wpng_info.height = 4 * (size + 2 * 4); // + border
-		wpng_info.title = "Fanny Ferrand";
+		wpng_info.title = (char*)"Fanny Ferrand";
 		wpng_info.have_text |= TEXT_TITLE;
-		wpng_info.author = "Fabrice Ferrand";
+		wpng_info.author = (char*)"Fabrice Ferrand";
 		wpng_info.have_text |= TEXT_AUTHOR;
-		wpng_info.desc = "QCM QR Code";
+		wpng_info.desc = (char*)"QCM QR Code";
 		wpng_info.have_text |= TEXT_DESC;
-		wpng_info.copyright = "Rafale Soft Inc. (c)";
+		wpng_info.copyright = (char*)"Rafale Soft Inc. (c)";
 		wpng_info.have_text |= TEXT_COPY;
-		wpng_info.email = "fabfer@wanadoo.fr";
+		wpng_info.email = (char*)"fabfer@wanadoo.fr";
 		wpng_info.have_text |= TEXT_EMAIL;
-		wpng_info.url = "http://github.com/RafaleSoft";
+		wpng_info.url = (char*)"http://github.com/RafaleSoft";
 		wpng_info.have_text |= TEXT_URL;
 		wpng_info.outfile = fopen(path, "wb");
 		wpng_info.pnmtype = 5;
@@ -267,6 +126,170 @@ SCAN_API int export_png_qrcode(const char *payload, const char *path)
 		}
 	}
 }
+
+static struct quirc *decoder;
+
+struct result_info
+{
+	int		file_count;
+	int		id_count;
+	int		decode_count;
+
+	unsigned int	load_time;
+	unsigned int	identify_time;
+	unsigned int	total_time;
+};
+
+
+static const char *data_type_str(int dt)
+{
+	switch (dt) {
+	case QUIRC_DATA_TYPE_NUMERIC: return "NUMERIC";
+	case QUIRC_DATA_TYPE_ALPHA:   return "ALPHA";
+	case QUIRC_DATA_TYPE_BYTE:    return "BYTE";
+	case QUIRC_DATA_TYPE_KANJI:   return "KANJI";
+	}
+
+	return "unknown";
+}
+
+void dump_data(const struct quirc_data *data)
+{
+	printf("    Version: %d\n", data->version);
+	printf("    ECC level: %c\n", "MLHQ"[data->ecc_level]);
+	printf("    Mask: %d\n", data->mask);
+	printf("    Data type: %d (%s)\n",
+		data->data_type, data_type_str(data->data_type));
+	printf("    Length: %d\n", data->payload_len);
+	printf("    Payload: %s\n", data->payload);
+
+	if (data->eci)
+		printf("    ECI: %d\n", data->eci);
+}
+
+void dump_cells(const struct quirc_code *code)
+{
+	int u, v;
+
+	printf("    %d cells, corners:", code->size);
+	for (u = 0; u < 4; u++)
+		printf(" (%d,%d)", code->corners[u].x,
+			code->corners[u].y);
+	printf("\n");
+
+	for (v = 0; v < code->size; v++) {
+		printf("    ");
+		for (u = 0; u < code->size; u++) {
+			int p = v * code->size + u;
+
+			if (code->cell_bitmap[p >> 3] & (1 << (p & 7)))
+				printf("[]");
+			else
+				printf("  ");
+		}
+		printf("\n");
+	}
+}
+
+static int qrdecode(struct quirc *decoder,
+	const char *path,
+	struct result_info *info)
+{
+	size_t len = strlen(path);
+	while (len >= 0 && path[len] != '/')
+		len--;
+	const char *filename = path + len + 1;
+
+	struct stat st;
+	if (stat(path, &st) < 0)
+	{
+		fprintf(stderr, "%s: lstat: %s\n", path, strerror(errno));
+		return -1;
+	}
+
+	int(*loader)(struct quirc *, const char *);
+	len = strlen(filename);
+	const char *ext = NULL;
+
+	while (len >= 0 && filename[len] != '.')
+		len--;
+	ext = filename + len + 1;
+	if (0 == strcmp(ext, "jpg") ||
+		0 == strcmp(ext, "JPG") ||
+		0 == strcmp(ext, "jpeg") ||
+		0 == strcmp(ext, "JPEG"))
+		loader = load_jpeg;
+	else if (0 == strcmp(ext, "png") || 0 == strcmp(ext, "PNG"))
+		loader = load_png;
+	else
+		return 0;
+
+	int ret = loader(decoder, path);
+	if (ret < 0)
+	{
+		fprintf(stderr, "%s: load failed\n", filename);
+		return -1;
+	}
+
+	quirc_end_api(decoder);
+
+	info->id_count = quirc_count_api(decoder);
+	for (int i = 0; i < info->id_count; i++)
+	{
+		struct quirc_code code;
+		struct quirc_data data;
+
+		quirc_extract_api(decoder, i, &code);
+
+		if (!quirc_decode_api(&code, &data))
+			info->decode_count++;
+	}
+
+	printf("  %-30s: %5u %5u %5u %5d %5d\n", filename,
+		info->load_time,
+		info->identify_time,
+		info->total_time,
+		info->id_count,
+		info->decode_count);
+
+	for (int i = 0; i < info->id_count; i++)
+	{
+		struct quirc_code code;
+
+		quirc_extract_api(decoder, i, &code);
+		struct quirc_data data;
+		quirc_decode_error_t err = quirc_decode_api(&code, &data);
+
+		printf("  Decode successful:\n");
+		dump_data(&data);
+		printf("\n");
+	}
+
+	info->file_count = 1;
+	return 1;
+}
+
+SCAN_API char* read_qrcode(const char *path)
+{
+	struct quirc *decoder = quirc_new_api();
+	if (NULL == decoder)
+	{
+		fprintf(stderr, "   Unable to create a quirc decoder.\n");
+		return NULL;
+	}
+
+	printf("Décodage QR-code pour: %s\n", path);
+
+	struct result_info info;
+	memset(&info, 0, sizeof(info));
+	if (qrdecode(decoder, path, &info) <= 0)
+		fprintf(stderr, "   Unable to decode QRCode.\n");
+
+	quirc_destroy_api(decoder);
+
+	return NULL;
+}
+
 
 SCAN_API int get_scan_answers(const SCAN* scan)
 {
@@ -309,20 +332,12 @@ SCAN_API int open_scan(const char* scan)
 	{
 		if (!extracttable(image, "table.tga"))
 		{
-			/*
-			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-									 CRaptorErrorManager::RAPTOR_ERROR,
-									 "Impossible d'extraire la table des réponses");
-									 */
+			fprintf(stderr, "open_scan Error:  impossible to extract response table\n");
 			return 0;
 		}
 		else if (!extractnum(image, "num.tiff"))
 		{
-			/*
-			mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-									 CRaptorErrorManager::RAPTOR_ERROR,
-									 "Impossible d'extraire l'identifiant");
-									 */
+			fprintf(stderr, "open_scan Error:  impossible to extract identifier\n");
 			return 0;
 		}
 		else
@@ -330,11 +345,7 @@ SCAN_API int open_scan(const char* scan)
 	}
 	else
 	{
-		/*
-		mgr->generateRaptorError(CPersistence::CPersistenceClassID::GetClassId(),
-								 CRaptorErrorManager::RAPTOR_FATAL,
-								 "Impossible d'ouvrir l'image source");
-								 */
+		fprintf(stderr, "open_scan Error:  impossible to open source image\n");
 		return 0;
 	}
 }
@@ -374,11 +385,11 @@ SCAN_API int close_doc()
 	{
 		std::stringstream doc;
 		doc << "scan_p" << num_scan++ << ".jpg" << std::ends;
-		rt = rt | _unlink(doc.str().c_str());
+		rt = rt | UNLINK(doc.str().c_str());
 	}
 
-	rt = rt | _unlink("rectified.jpg");
-	rt = rt | _unlink("resized.jpg");
+	rt = rt | UNLINK("rectified.jpg");
+	rt = rt | UNLINK("resized.jpg");
 
 	return (0 == rt);
 }

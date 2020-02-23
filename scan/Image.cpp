@@ -172,7 +172,27 @@ bool CImage::loadImage(const std::string &filename,
 void CImage::releasePixels(void)
 {
 	if (pixels != NULL)
-		delete[] pixels;
+	{
+		switch (m_pixelType)
+		{
+			case CGL_COLOR24:
+			case CGL_COLOR24_ALPHA:
+			{
+				unsigned char *ppixels = (unsigned char*)pixels;
+				delete[] ppixels;
+				break;
+			}
+			case CGL_COLOR_FLOAT16:
+			case CGL_COLOR_FLOAT16_ALPHA:
+			case CGL_COLOR_FLOAT32:
+			case CGL_COLOR_FLOAT32_ALPHA:
+			{
+				float *ppixels = (float*)pixels;
+				delete[] ppixels;
+				break;
+			}
+		}
+	}
 
 	pixels = NULL;
 }
