@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="file">Fichier</label>
-    <input name="file" id="file" type="file" value="{{ request.form['file'] }}" required>
+  <form method=POST enctype="multipart/form-data">
+    <label for="question">Enoncé</label>
+    <input name="question" id="question" type=file value="{{ request.form['question'] }}" required>
     <label for="date">Date évaluation</label>
-    <input name="date" id="date" type="date" value="{{ request.form['date'] }}" required>
-    <input type="submit" value="Load">
+    <input name="date" id="date" type=date value="{{ request.form['date'] }}" required>
+    <input type="submit" value="Télécharger">
   </form>
 {% endblock %}

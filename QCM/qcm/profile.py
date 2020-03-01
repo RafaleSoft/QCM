@@ -1,15 +1,18 @@
+import os
+
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for
-)
+    Blueprint, flash, g, redirect,
+    render_template, request, url_for,
+    current_app)
 
 from qcm.auth import login_required
 from qcm.db import get_db
 import csv
-import logging
 
 bp = Blueprint('profile', __name__)
 
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
+modal_form = {'display': 'none', 'text': 'Empty text', 'class_id': 0}
 
 
 @bp.route('/profile')
@@ -23,14 +26,11 @@ def index():
     cls = db.execute('SELECT * FROM classes WHERE teacher_id = ?', (g.user['id'],)).fetchall()
     classes = []
     for c in cls:
-        classe = {}
-        classe['id'] = c['id']
-        classe['classname'] = c['classname']
-        classe['level'] = niveaux[c['level']]
+        classe = {'id': c['id'], 'classname': c['classname'], 'level': niveaux[c['level']]}
         els = db.execute('SELECT * FROM students WHERE class_id = ?', (c['id'],)).fetchall()
         classe['eleves'] = els
         classes.append(classe)
-    return render_template('profile/teacher.html', teacher=teacher, classes=classes)
+    return render_template('profile/teacher.html', teacher=teacher, classes=classes, modal=modal_form)
 
 
 @bp.route('/<int:teacher_id>/update', methods=('GET', 'POST'))
@@ -163,8 +163,7 @@ def deleteStudent(student_id):
         db.commit()
         return redirect(url_for('profile.index'))
 
-    topic = {}
-    topic['title'] = 'Retirer l\'élève:'
+    topic = {'title': 'Retirer l\'élève:'}
     db = get_db()
     eleve = db.execute(
         'SELECT * FROM students'
@@ -178,34 +177,57 @@ def deleteStudent(student_id):
 @bp.route('/<int:class_id>/deleteClassroom', methods=('GET', 'POST'))
 @login_required
 def deleteClassroom(class_id):
+    global modal_form
+
+    if 'none' == modal_form['display']:
+        db = get_db()
+        classe = db.execute('SELECT * FROM classes WHERE id = ?', (class_id,)).fetchone()
+        modal_form['display'] = 'block'
+        modal_form['text'] = 'Supprimer la classe ' + classe['classname'] + ' ?'
+        modal_form['class_id'] = class_id
+    else:
+        modal_form['display'] = 'none'
+        modal_form['text'] = 'Texte vide'
+        modal_form['class_id'] = 0
+
+        if request.args.__contains__('action'):
+            action = request.args['action']
+            if action == 'yes':
+                db = get_db()
+                db.execute('DELETE from students WHERE class_id = ?', (class_id,))
+                db.execute('DELETE from classes WHERE id = ?', (class_id,))
+                db.execute('DELETE from evaluations WHERE class_id = ?', (class_id,))
+                db.commit()
+                current_app.logger.info("Classe %d supprimée.", class_id)
+            elif action == 'no':
+                current_app.logger.info("Classe %d non supprimée.",class_id)
+            else:
+                flash("Erreur interne")
+
     return redirect(url_for('profile.index'))
-
-
-'''
-This structure pass parameters as URL subpath, but application data
-is then relative to this path, which is problematic in templates.
-
-@bp.route('/<int:class_id>/loadClassroom', methods=('GET', 'POST'))
-'''
 
 
 @bp.route('/loadClassroom', methods=('GET', 'POST'))
 @login_required
 def loadClassroom():
     if request.method == 'POST':
-        file = request.form['file']
+        file_storage = request.files['file']
         error = None
 
-        if not file:
+        if not file_storage:
             error = 'Filename is required.'
-        elif not file.endswith('.csv'):
+        elif not file_storage.filename.endswith('.csv'):
             error = 'A CSV file is required.'
 
         if error is not None:
             flash(error)
         else:
-            db = get_db()
             class_id = request.args['class_id']
+            base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
+            file = os.path.join(base_path, file_storage.filename)
+            file_storage.save(file)
+
+            db = get_db()
 
             with open(file) as csvDataFile:
                 csv_reader = csv.reader(csvDataFile)
@@ -217,7 +239,7 @@ def loadClassroom():
                                    'VALUES (?, ?, ?)',
                                    (class_id, firstname, lastname))
                     else:
-                        logging.warning("Invalid line found in csv input file")
+                        current_app.logger.warning("Invalid line found in csv input file")
 
             db.commit()
 

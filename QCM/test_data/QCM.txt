@@ -1,0 +1,121 @@
+* $\frac34 \times 6,4$ est égal à
++ $4,8$
+- $1,6$
+- $3,2$
+- $2,2$
+- $3,8$
+* $\frac25 \times 750$ est égal à
+- $150$
++ $300$ 
+- $450$
+- $600$
+- $30$
+* $\frac57 \times 5600$ est égal à 
+- $7840$
+- $400$
++ $4000$
+- $784$
+- $3200$
+* Si $7 \times A = 55$, alors $A$ est égal à
+- $7,857$
+- $\frac{7}{55}$
+- $0,1272$
++ $\frac{55}{7}$
+- $7,85$
+* Si $12 \times B = 6$ alors $B$ est égal à
+- $0,75$
+- $0,25$
+- $\frac14$
+- $\frac13$
++ $0,5$
+* Si $81 \times C = 54$ alors $C$ est égal à
++ $\frac{54}{81}$
+- $\frac{81}{54}$
+- $0,666$
+- $1,5$
+- $0,5$
+* $\frac27 \times \frac35$ est égal à 
+- $\frac{10}{21}$ 
++ $\frac{6}{35}$
+- $\frac{35}{6}$
+- $\frac{21}{10}$
+- $\frac{9}{8}$
+* $\frac59 \times \frac{2}{21}$ est égal à
+- $\frac{7}{30}$
+- $\frac{189}{10}$
++ $\frac{10}{189}$
+- $\frac{26}{18}$
+- $\frac{18}{26}$
+* $\frac94 \times \frac52$ est égal à
+- $\frac{18}{20}$
+- $\frac{6}{13}$
+- $\frac{13}{6}$
++ $\frac{45}{8}$
+- $\frac{8}{45}$
+* $\frac{20,8}{4}$ est égal à
+- $0,052$
+- $5,002$
+- $0,52$
+- $5,02$
++ $5,2$
+* $\frac{1,05}{5}$ est égal à
++ $0,21$
+- $2,1$
+- $0,021$
+- $4,76$
+- $0,476$
+* $\frac{6,2}{100}$ est égal à
+- $0,62$
++ $0,062$
+- $0,0062$
+- $\frac{62}{1000}$
+- $\frac{620}{1000}$
+* Dans une classe, les trois quarts des trente-deux élèves pratiquent un sport. Combien d'élèves pratiquent un sport?
+- $16$
+- $20$
++ $24$
+- $28$
+- $10$
+* Dans une classe, les cinq septièmes des trente-cinq élèves sont inscrits à la bibliothèque. Combien d'élèves sont inscrits à la bibliothèque?
+- $27$
+- $17$
+- $15$
++ $25$
+- $20$
+* Dans une recette de gâteau pour 6 personnes, il faut 240g de farine. Quelle quantité de farine faut-il pour préparer ce gâteau pour 4 personnes?
+- 120g
+- 140g
+- 200g
+- 180g
++ 160g
+* Dans une classe de $30$ élèves, $\frac23$ pratiquent un sport. Parmi les élèves qui pratiquent un sport, $\frac{1}{10}$ sont inscrits au conservatoire de musique. Combien d'élèves qui pratiquent un sport sont inscrits au conservatoire de musique?
++ $2$
+- $1$
+- $3$
+- $4$
+- $5$
+* Si $1,5=\frac{D}{4}$ alors $D$ est égal à
+- $2$
++ $6$
+- $5$
+- $4$
+- $3$
+* Si $1,5=\frac{30}{E}$ alors $E$ est égal à
+- $5$
+- $25$
++ $20$
+- $15$
+- $10$
+* Si $1,5=\frac{F}{100}$ alors $F$ est égal à
+- $150000$
+- $15000$
+- $1500$
++ $150$
+- $15$
+* Dans une classe de $32$ élèves, $\frac78$ sont demi-pensionnaires. Parmi les demi-pensionnaires, $\frac67$ sont inscrits à la bibliothèque. Combien d'élèves demi-pensionnaires sont inscrits à la bibliothèque?
+- $26$
+- $22$
+- $25$
+- $23$
++ $24$
+

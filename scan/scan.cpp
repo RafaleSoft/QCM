@@ -12,7 +12,7 @@
 
 #include "TGAImaging.h"
 #include "JPGImaging.h"
-#include "TIFFImaging.h"
+//#include "TIFFImaging.h"
 #include "PNGImaging.h"
 #include "Image.h"
 
@@ -40,7 +40,12 @@ std::vector<SCAN>	global_scans;
 CImage				*current_scan = NULL;
 
 
-SCAN_API int scan_version(void)
+extern "C" void __cxa_pure_virtual()
+{
+	exit(-1);
+}
+
+extern SCAN_API int scan_version(void)
 {
 	return 12345;
 }
@@ -49,7 +54,7 @@ SCAN_API int init_scan(void)
 {
 	CImage::setImageKindIO(new CTGAImaging());
 	CImage::setImageKindIO(new CJPGImaging());
-	CImage::setImageKindIO(new CTIFFImaging());
+	//CImage::setImageKindIO(new CTIFFImaging());
 	CImage::setImageKindIO(new CPNGImaging());
 
 	return 1;

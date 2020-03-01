@@ -1,0 +1,3 @@
+01;b;b;a;a;b;e;b;c;c;a;d;a;b;a;b;a;d;c;b;b;
+02;e;a;c;d;d;d;c;b;a;b;a;e;a;d;e;a;e;d;c;a;
+03;b;c;d;a;d;e;a;b;e;b;b;c;b;a;d;a;c;e;a;a;

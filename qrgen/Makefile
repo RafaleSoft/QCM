@@ -25,7 +25,7 @@ CFLAGS += -Wall -fsanitize=undefined
 # Optimization level
 CFLAGS += -O1
 
-CCCFLAGS = -DLINUX -fPIC -fpermissive
+CCCFLAGS = -DLINUX -fPIC
 OUTPUT = .lib
 LDFLAGS = -Bdynamic -shared -lstdc++
 

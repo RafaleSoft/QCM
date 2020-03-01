@@ -1,6 +1,7 @@
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, url_for, current_app
+    Blueprint, flash, g, redirect, render_template, request, url_for, current_app, send_file
 )
+
 from werkzeug.exceptions import abort
 
 from qcm.auth import login_required
@@ -9,7 +10,6 @@ from qcm.qcm import txt2qcm, qcm2tex
 
 import os
 from pyscan import qrgen
-
 
 bp = Blueprint('blog', __name__)
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
@@ -58,14 +58,14 @@ def index():
 @login_required
 def genevaluation():
     if request.method == 'POST':
-        file = request.form['file']
+        question_storage = request.files['question']
         date = request.form['date']
         error = None
 
-        if not file:
-            error = 'Filename is required.'
+        if not question_storage:
+            error = "Un fichier d'énoncé est requis."
         if not date:
-            error = 'Evaluation date is required.'
+            error = "Une date d'évaluation est requise."
 
         if error is not None:
             flash(error)
@@ -81,21 +81,23 @@ def genevaluation():
                 Generate a QR code for each student
             '''
             base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
+            question_storage.save(os.path.join(base_path, question_storage.filename))
             eleves = []
             i = 0
             for e in els:
                 eleves.append([e['lastname'], e['firstname']])
-                qrgen(e['lastname'] + "-" + e['firstname'], base_path+'\\qr'+str(i)+'.png')
+                qrgen(e['lastname'] + "-" + e['firstname'], base_path + '\\qr' + str(i) + '.png')
                 i = i + 1
 
             '''
                 Generate a pdf files
             '''
-            filename = os.path.join(base_path, file)
+            filename = os.path.join(base_path, question_storage.filename)
             questions = txt2qcm(filename)
             if len(questions) > 0:
                 qcm2tex(questions, len(els), base_path, eleves)
-                base_cmd = current_app.config['LATEX_HOME'] + 'bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' '
+                base_cmd = current_app.config[
+                               'LATEX_HOME'] + 'bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' '
                 os.system(base_cmd + os.path.join(base_path, 'sujet.tex'))
                 os.system(base_cmd + os.path.join(base_path, 'reponse.tex'))
 
@@ -113,6 +115,15 @@ def genevaluation():
             os.unlink(base_path + '\\sujet.log')
             os.unlink(base_path + '\\sujet.tex')
 
+            os.rename(base_path + '\\sujet.pdf', base_path + '\\' + date + '_sujet.pdf')
+            os.rename(base_path + '\\reponse.pdf', base_path + '\\' + date + '_reponse.pdf')
+
+            db.execute(
+                'INSERT INTO evaluations (class_id, date_eval,subject)'
+                ' VALUES (?, ?, ?)',
+                (class_id, date, filename))
+            db.commit()
+
             return redirect(url_for('blog.index'))
 
     return render_template('blog/opendatafile.html')
@@ -125,6 +136,20 @@ def scanevaluation():
         return redirect(url_for('blog.index'))
 
     return render_template('blog/opendatafile.html')
+
+
+@bp.route('/downloadevaluation/<int:class_id>/<path>')
+@login_required
+def downloadevaluation(class_id=0, path=None):
+    if path is None:
+        abort(404)
+    if class_id == 0:
+        abort(404)
+
+    fp = os.path.join(current_app.instance_path, 'users', str(class_id), path)
+
+    print('path:', fp)
+    return send_file(fp)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

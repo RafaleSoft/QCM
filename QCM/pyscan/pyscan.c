@@ -31,9 +31,13 @@ static PyObject* qrread(PyObject* self, PyObject* args)
     Py_ssize_t pathlen = 0;
 
     if(!PyArg_ParseTuple(args, "s#", &path, &pathlen))
+    {
         return NULL;
+    }
     if (NULL == path)
+    {
         return NULL;
+    }
 
 	char *payload = read_qrcode(path);
 	if (NULL != payload)
@@ -57,9 +61,13 @@ static PyObject* qrgen(PyObject* self, PyObject* args)
     Py_ssize_t pathlen = 0;
 
     if(!PyArg_ParseTuple(args, "s#s#", &text, &textlen, &path, &pathlen))
+    {
         return NULL;
+    }
     if ((NULL == text) || (NULL == path))
+    {
         return NULL;
+    }
 
     if (1 == export_png_qrcode(text, path))
     {
@@ -106,7 +114,9 @@ PyMODINIT_FUNC PyInit_pyscan(void)
 					QRGEN_VERSION, qrgen_version());
 
     if (0 == init_scan())
+    {
         fprintf(stderr, "   Failed to initialize scan library. Please restart.\n");
+    }
 
 	return PyModule_Create(&myModule);
 }

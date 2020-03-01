@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{926a1033-9fa3-4375-9390-59ed1a12c6dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{294c99bc-4719-43ad-b82b-f90b19a00013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{f14f7279-f6e6-46a8-b08a-8fa24e06932e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\png.c" />
+    <ClCompile Include="source\pngerror.c" />
+    <ClCompile Include="source\pngget.c" />
+    <ClCompile Include="source\pngmem.c" />
+    <ClCompile Include="source\pngpread.c" />
+    <ClCompile Include="source\pngread.c" />
+    <ClCompile Include="source\pngrio.c" />
+    <ClCompile Include="source\pngrtran.c" />
+    <ClCompile Include="source\pngrutil.c" />
+    <ClCompile Include="source\pngset.c" />
+    <ClCompile Include="source\pngtrans.c" />
+    <ClCompile Include="source\pngwio.c" />
+    <ClCompile Include="source\pngwrite.c" />
+    <ClCompile Include="source\pngwtran.c" />
+    <ClCompile Include="source\pngwutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="source\pngwin.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\png.h" />
+    <ClInclude Include="source\pngconf.h" />
+    <ClInclude Include="source\pngdebug.h" />
+    <ClInclude Include="source\pnginfo.h" />
+    <ClInclude Include="source\pnglibconf.h" />
+    <ClInclude Include="source\pngpriv.h" />
+    <ClInclude Include="source\pngstruct.h" />
+  </ItemGroup>
+</Project>

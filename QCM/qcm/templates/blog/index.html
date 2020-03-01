@@ -9,24 +9,40 @@
 
 {% block content %}
 
-<h1>Classes:</h1>
-{% for c in classes %}
-    <article class="classes">
-        <div class="class">
+<article class="classes">
+    <div>
+    {% for c in classes %}
+    <div class="class">
+        <div>
             <h3>{{ c['classname'] }} - Niveau: {{ c['level'] }}, Effectifs:{{ c['eleves'] }}</h3>
             <a class="action" href="{{ url_for('blog.genevaluation', class_id=c['id']) }}">Générer évaluation</a>
             <a class="action" href="{{ url_for('blog.scanevaluation', class_id=c['id']) }}">Soumettre évaluation</a>
-            <h3>Evaluations:</h3>
-            <ul>
-                {% for e in classes['evaluations'] %}
-                    <li>Date:{{ e }}</li>
-                {% endfor %}
-            </ul>
         </div>
-    </article>
-{% endfor %}
+        <div>
+            <h3>Evaluations:</h3>
+            <table>
+                <tr>
+                    <th>Date:</th>
+                    <th>Sujet:</th>
+                    <th>Réponses:</th>
+                </tr>
+                {% for e in c['evaluations'] %}
+                    <tr>
+                        <td>{{ e['date_eval'] }}</td>
+                        <td><a class="action" href="{{ url_for('blog.downloadevaluation', class_id=c['id'], path=e['date_eval']+'_sujet.pdf') }}"><img src="static/pdf_xs.png"/></a></td>
+                        <td><a class="action" href="{{ url_for('blog.downloadevaluation', class_id=c['id'], path=e['date_eval']+'_reponse.pdf') }}"><img src="static/pdf_xs.png"/></a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</article>
 
 <h1>Evènements:</h1>
+<hr>
+<article class="events">
 {% for post in posts %}
     <article class="post">
         <header>
@@ -44,6 +60,7 @@
         <hr>
     {% endif %}
 {% endfor %}
+</article>
 
 {% endblock %}
 

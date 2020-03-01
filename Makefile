@@ -1,6 +1,6 @@
 ###########################################################################
 #                                                                         #
-#  Makefile.qrgen                                                         #
+#  Makefile.pyscan                                                         #
 #                                                                         #
 #    Raptor OpenGL & Vulkan realtime 3D Engine SDK.                       #
 #                                                                         #
@@ -18,65 +18,46 @@
 
 export
 
-# Mandatory compiler flags
-CFLAGS += -std=c99
-# Diagnostics. Adding '-fsanitize=address' is helpful for most versions of Clang and newer versions of GCC.
-CFLAGS += -Wall -fsanitize=undefined
-# Optimization level
-CFLAGS += -O1
+OUTPUT = QCM/venv/libs64
 
-CCCFLAGS = -DLINUX -fPIC -fpermissive -fno-rtti
-OUTPUT = .lib
-LDFLAGS = -Wno-undef -Bdynamic -shared -lstdc++
+all:	qcm
 
-SO = $(OUTPUT)/libscan.so.1
-LIB = $(OUTPUT)/libscan.a
+qcm: pyscan
+	(cd QCM; python3 setup.py build)
+	(cd QCM; sudo python3 setup.py install)
 
-SRC = \
-	scan.cpp \
-	scan_pdf.cpp \
-	scan_jpg.cpp \
-	scan_png.cpp \
-	Color.cpp \
-	Image.cpp \
-	JPGImaging.cpp \
-	PNGImaging.cpp \
-	TGAImaging.cpp
-
-OBJ = \
-	$(OUTPUT)/scan.o \
-	$(OUTPUT)/scan_pdf.o \
-	$(OUTPUT)/scan_jpg.o \
-	$(OUTPUT)/scan_png.o \
-	$(OUTPUT)/Color.o \
-	$(OUTPUT)/Image.o \
-	$(OUTPUT)/JPGImaging.o \
-	$(OUTPUT)/PNGImaging.o \
-	$(OUTPUT)/TGAImaging.o
-
-all:	$(LIB) $(SO)
+pyscan:	qrgen quirc scan
+	(cd QCM/pyscan ; python3 setup.py build)
+	(cd QCM/pyscan ; sudo python3 setup.py install)
 
 clean:
-	rm -rf $(OUTPUT)
-	mkdir -p $(OUTPUT)
+	rm -f $(OUTPUT)/*
+	make -C qrgen clean
+	make -C QUIRC/quirc clean
+	make -C QUIRC clean
+	make -C scan clean
+	rm -rf QCM/pyscan/build
 
-$(SO):	$(OBJ)
-	gcc -o $(SO) $(OBJ) $(LDFLAGS)
-	cp $(SO) .
+qrgen:	$(OUTPUT)/libqrgen.so
 
-$(LIB):	$(OBJ) 
-	ar -qcv $(LIB) $(OBJ)
-	cp $(LIB) .
+quirc:	$(OUTPUT)/libquirc.so
 
-$(OBJ):	$(SRC)
-	gcc $(CCCFLAGS) -c scan.cpp  -o $(OUTPUT)/scan.o
-	gcc $(CCCFLAGS) -c scan_jpg.cpp  -o $(OUTPUT)/scan_jpg.o
-	gcc $(CCCFLAGS) -c scan_pdf.cpp  -o $(OUTPUT)/scan_pdf.o
-	gcc $(CCCFLAGS) -c scan_png.cpp  -o $(OUTPUT)/scan_png.o
-	gcc $(CCCFLAGS) -c Color.cpp  -o $(OUTPUT)/Color.o
-	gcc $(CCCFLAGS) -c Image.cpp  -o $(OUTPUT)/Image.o
-	gcc $(CCCFLAGS) -c JPGImaging.cpp  -o $(OUTPUT)/JPGImaging.o
-	gcc $(CCCFLAGS) -c PNGImaging.cpp  -o $(OUTPUT)/PNGImaging.o
-	gcc $(CCCFLAGS) -c TGAImaging.cpp  -o $(OUTPUT)/TGAImaging.o
+scan:	$(OUTPUT)/libscan.so
 
 
+$(OUTPUT)/libqrgen.so:
+	make -C qrgen
+	cp qrgen/libqrgen.* $(OUTPUT)
+	ln -s $(OUTPUT)/libqrgen.so.1 $(OUTPUT)/libqrgen.so
+	
+$(OUTPUT)/libquirc.so:
+	make -C QUIRC/quirc libquirc.a
+	make -C QUIRC/quirc libquirc.so
+	make -C QUIRC
+	cp QUIRC/libquirc.* $(OUTPUT)
+	ln -s $(OUTPUT)/libquirc.so.1 $(OUTPUT)/libquirc.so
+
+$(OUTPUT)/libscan.so:
+	make -C scan
+	cp scan/libscan.* $(OUTPUT)
+	ln -s $(OUTPUT)/libscan.so.1 $(OUTPUT)/libscan.so

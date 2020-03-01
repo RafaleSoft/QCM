@@ -3,7 +3,6 @@ from flask import (
 )
 from random import *
 import os
-import pyscan
 
 
 def est_groupe(L):

@@ -5,6 +5,7 @@
 #include "QR-Code-generator/c/qrcodegen.h"
 #include "qrgen.h"
 
+static const char* version = QRGEN_VERSION;
 
 QRGEN_API int qrgen_getModule(const unsigned char qrcode[], int x, int y)
 {
@@ -33,5 +34,5 @@ QRGEN_API int qrgen_encodeText(const char *text,
 
 QRGEN_API const char* qrgen_version(void)
 {
-	return QRGEN_VERSION;
+	return version;
 }
