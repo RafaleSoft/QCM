@@ -39,21 +39,19 @@ def update(teacher_id):
     if request.method == 'POST':
         firstname = request.form['firstname']
         lastname = request.form['lastname']
+        email = request.form['email']
+        sendevalemail = request.form['sendevalemail']
+        sendrecallemail = request.form['sendrecallemail']
         error = None
-
-        if not firstname:
-            error = 'Firstname is required.'
-        if not lastname:
-            error = 'Lastname is required.'
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE users SET firstname = ?, lastname = ?'
+                'UPDATE users SET firstname = ?, lastname = ?, email = ?, sendevalemail = ?, sendrecallemail = ?'
                 ' WHERE id = ?',
-                (firstname, lastname, teacher_id)
+                (firstname, lastname, email, sendevalemail, sendrecallemail, teacher_id)
             )
             db.commit()
             return redirect(url_for('profile.index'))

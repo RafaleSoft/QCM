@@ -10,6 +10,12 @@
     <input name="firstname" id="firstname" value="{{ request.form['firstname'] or teacher['firstname'] }}" required>
     <label for="lastname">Nom</label>
     <input name="lastname" id="lastname" value="{{ request.form['lastname'] or teacher['lastname'] }}" required>
+    <label for="email">E-mail</label>
+    <input name="email" id="email" type="email" value="{{ request.form['email'] or teacher['email'] }}" required>
+    <label for="sendevalemail">Envoyer les evaluations par E-mail</label>
+    <input name="sendevalemail" id="sendevalemail" type="checkbox" value="{{ request.form['sendevalemail'] or teacher['sendevalemail'] }}">
+    <label for="sendrecallemail">Envoyer un rappel par E-mail</label>
+    <input name="sendrecallemail" id="sendrecallemail" type="checkbox" value="{{ request.form['sendrecallemail'] or teacher['sendrecallemail'] }}">
     <input type="submit" value="Enregistrer">
 </form>
 {% endblock %}

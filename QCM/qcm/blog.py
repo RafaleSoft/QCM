@@ -80,13 +80,15 @@ def genevaluation():
             '''
                 Generate a QR code for each student
             '''
-            base_path = os.path.join(current_app.instance_path, 'users', str(class_id))
+            base_path = os.path.join(current_app.instance_path, 'users')
+            base_path = os.path.join(base_path, str(class_id))
             question_storage.save(os.path.join(base_path, question_storage.filename))
             eleves = []
             i = 0
             for e in els:
                 eleves.append([e['lastname'], e['firstname']])
-                qrgen(e['lastname'] + "-" + e['firstname'], base_path + '\\qr' + str(i) + '.png')
+                qr = os.path.join(base_path, 'qr') + str(i) + '.png'
+                qrgen(e['lastname'] + "-" + e['firstname'], qr)
                 i = i + 1
 
             '''
@@ -96,8 +98,9 @@ def genevaluation():
             questions = txt2qcm(filename)
             if len(questions) > 0:
                 qcm2tex(questions, len(els), base_path, eleves)
-                base_cmd = current_app.config[
-                               'LATEX_HOME'] + 'bin\\win32\\pdflatex.exe -output-directory=' + base_path + ' '
+                base_cmd = current_app.config['LATEX_HOME'] + \
+                           current_app.config['LATEX_BIN'] + \
+                           ' -output-directory=' + base_path + ' '
                 os.system(base_cmd + os.path.join(base_path, 'sujet.tex'))
                 os.system(base_cmd + os.path.join(base_path, 'reponse.tex'))
 
@@ -106,17 +109,19 @@ def genevaluation():
             '''
             i = 0
             for e in els:
-                os.unlink(base_path + '\\qr' + str(i) + '.png')
+                qr = os.path.join(base_path, 'qr') + str(i) + '.png'
+                os.unlink(qr)
                 i = i + 1
-            os.unlink(base_path + '\\reponse.aux')
-            os.unlink(base_path + '\\reponse.log')
-            os.unlink(base_path + '\\reponse.tex')
-            os.unlink(base_path + '\\sujet.aux')
-            os.unlink(base_path + '\\sujet.log')
-            os.unlink(base_path + '\\sujet.tex')
+            os.unlink(os.path.join(base_path, 'reponse.aux'))
+            os.unlink(os.path.join(base_path, 'reponse.log'))
+            os.unlink(os.path.join(base_path, 'reponse.tex'))
+            os.unlink(os.path.join(base_path, 'sujet.aux'))
+            os.unlink(os.path.join(base_path, 'sujet.log'))
+            os.unlink(os.path.join(base_path, 'sujet.tex'))
 
-            os.rename(base_path + '\\sujet.pdf', base_path + '\\' + date + '_sujet.pdf')
-            os.rename(base_path + '\\reponse.pdf', base_path + '\\' + date + '_reponse.pdf')
+            datepath = os.path.join(base_path, date)
+            os.rename(os.path.join(base_path, 'sujet.pdf'), datepath + '_sujet.pdf')
+            os.rename(os.path.join(base_path, 'reponse.pdf'), datepath + '_reponse.pdf')
 
             db.execute(
                 'INSERT INTO evaluations (class_id, date_eval,subject)'

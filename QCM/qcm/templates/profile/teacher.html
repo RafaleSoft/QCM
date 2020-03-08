@@ -64,8 +64,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
     <header>
         <div>
             <h1>Identité</h1>
-            <p>Prénom: {{ teacher['firstname'] }}</p>
-            <p>Nom: {{ teacher['lastname'] }}</p>
+            <div>
+                <p>Prénom: {{ teacher['firstname'] }}</p>
+                <p>Nom: {{ teacher['lastname'] }}</p>
+                <p>E-mail: {{ teacher['email'] }}</p>
+            </div>
         </div>
         <a class="action" href="{{ url_for('profile.update', teacher_id=teacher['id']) }}">Editer</a>
     </header>

@@ -3,15 +3,17 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
   <h1>QCM</h1>
+  {% if g.user %}
+    <h2>Bonjour {{ g.user['username'] }} !</h2>
+  {% endif %}
   <ul>
     {% if g.user %}
-      <li><span>Bonjour {{ g.user['username'] }} !</span>
-      <li><a href="{{ url_for('blog.index') }}"><img src="static/home_m.png"/></a>
-      <li><a href="{{ url_for('profile.index') }}"><img src="static/settings_m.png"/></a>
-      <li><a href="{{ url_for('auth.logout') }}"><img src="static/logout_m.png"/></a>
+      <li><a href="{{ url_for('blog.index') }}"><img src="static/home_m.png"/></a></li>
+      <li><a href="{{ url_for('profile.index') }}"><img src="static/settings_m.png"/></a></li>
+      <li><a href="{{ url_for('auth.logout') }}"><img src="static/logout_m.png"/></a></li>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
+      <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
     {% endif %}
   </ul>
 </nav>
@@ -30,9 +32,9 @@
 <section class="footer">
   <footer><table><tr>
       <td>Powered by: <a href="http://flask.pocoo.org/"/> </td>
-      <td><a href="http://flask.pocoo.org/"><img src="static/flask_small.png"/></a></td>
+      <td><a href="http://flask.pocoo.org/"><img src="{{ url_for('static', filename='flask_small.png') }}"/></a></td>
       <td> and <a href="https://www.python.org/"/></td>
-      <td><a href="https://www.python.org/"><img src="static/python-logo.png"/></a></td>
+      <td><a href="https://www.python.org/"><img src="{{ url_for('static', filename='python-logo.png') }}"/></a></td>
       <td>Contact information:</td>
       <td align="right">
            <table>
@@ -42,7 +44,7 @@
       </td>
       <td>
           <table>
-              <tr><td>Version  1.0.0</td></tr>
+              <tr><td>Version  1.1.0</td></tr>
               <tr><td>Last update: 20/12/2019</td></tr>
           </table>
       </td>

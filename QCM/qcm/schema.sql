@@ -10,7 +10,10 @@ CREATE TABLE users (
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   firstname TEXT NOT NULL,
-  lastname TEXT NOT NULL
+  lastname TEXT NOT NULL,
+  email TEXT NOT NULL,
+  sendevalemail BIT NOT NULL,
+  sendrecallemail BIT NOT NULL
 );
 
 CREATE TABLE classes (

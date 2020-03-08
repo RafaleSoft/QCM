@@ -115,7 +115,7 @@ def notation(fsol, felv, listelv, fres):
 def qcm2tex(qcm, n, path, eleves, sol=False, cor=False):
     lRep = []
     with open(os.path.join(path, 'sujet.tex'), 'w', encoding='latin1') as f:
-        with open(current_app.config['LATEX_HOME'] + 'entete2.tex', 'r', encoding='utf8') as e:
+        with open(current_app.config['LATEX_DATA'] + 'entete2.tex', 'r', encoding='utf8') as e:
             line = e.readline()
             while line:
                 f.write(line)
@@ -197,7 +197,7 @@ def qcm2tex(qcm, n, path, eleves, sol=False, cor=False):
                 f.write('\\corr{' + correction + '}\n')
             f.write('\\end{enumerate}\n')
 
-        with open(current_app.config['LATEX_HOME'] + 'fin2.tex', 'r', encoding='utf8') as e:
+        with open(current_app.config['LATEX_DATA'] + 'fin2.tex', 'r', encoding='utf8') as e:
             line = e.readline()
             while line:
                 f.write(line)
@@ -205,7 +205,7 @@ def qcm2tex(qcm, n, path, eleves, sol=False, cor=False):
     print('Il y a {} questions '.format(compteur))
 
     with open(os.path.join(path, 'reponse.tex'), 'w', encoding='latin1') as f:
-        with open(current_app.config['LATEX_HOME'] + 'enteteRep.tex', 'r', encoding='utf8') as e:
+        with open(current_app.config['LATEX_DATA'] + 'enteteRep.tex', 'r', encoding='utf8') as e:
             line = e.readline()
             while line:
                 f.write(line)

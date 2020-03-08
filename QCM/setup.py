@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name="qcm",
-    version="1.0.0",
+    version="1.1.0",
     author="Fanny & Fabrice Ferrand",
     author_email="fabfer@wanadoo.fr",
     description="Site web de d'édition et de génération de QCM Mathématiques",

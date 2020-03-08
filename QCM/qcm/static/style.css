@@ -49,7 +49,7 @@ nav ul  {
   padding: 0;
 }
 
-nav ul li a, nav ul li span, header .action {
+nav ul li a, nav ul li, header .action {
   display: block;
   padding: 0.5rem;
 }

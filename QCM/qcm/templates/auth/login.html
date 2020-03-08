@@ -1,50 +1,21 @@
-<!DOCTYPE html>
-<title>{% block title %}{% endblock %} - QCM</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
-  <h1>QCM</h1>
-  <ul>
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
-  </ul>
-</nav>
+{% extends 'base.html' %}
 
-<section class="content">
-  <header>
-    <h1>Log In</h1>
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
+{% block header %}
+<h1>{% block title %}Connexion{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
   <form method="post">
     <label for="username">Username</label>
-    <input name="username" id="username" required>
+    <input name="username" id="username" value="{{ request.form['username'] }}" required>
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" required>
-    <input type="submit" value="Log In">
-  </form>
-</section>
+    <input type="password" name="password" id="password" value="{{ request.form['password'] }}">
 
-<section class="footer">
-  <footer><table><tr>
-      <td>Powered by: <a href="http://flask.pocoo.org/"/> </td>
-      <td><a href="http://flask.pocoo.org/"><img src="../static/flask_small.png"/></a></td>
-      <td> and <a href="https://www.python.org/"/></td>
-      <td><a href="https://www.python.org/"><img src="../static/python-logo.png"/></a></td>
-      <td>Contact information:</td>
-      <td align="right">
-           <table>
-           <tr><td><a href="mailto:fabfer@wanadoo.fr">fabfer@wanadoo.fr</a></td></tr>
-           <tr><td>Rafale Soft Inc. (c)</td></tr>
-           </table>
-      </td>
-      <td>
-          <table>
-              <tr><td>Version  1.0.0</td></tr>
-              <tr><td>Last update: 23/01/2020</td></tr>
-          </table>
-      </td>
-  </tr></table></footer>
-</section>
+    <div>
+      <input type="submit" value="Connecter">
+      <input type="submit" value="Mot de passe oublié" formaction="{{ url_for('auth.forget') }}">
+    </div>
+  </form>
+{% endblock %}
 
 
