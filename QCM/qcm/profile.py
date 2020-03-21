@@ -12,7 +12,7 @@ import csv
 bp = Blueprint('profile', __name__)
 
 niveaux = ['Terminale', 'Première', 'Seconde', 'Troisième', 'Quatrième', 'Cinquième', 'Sixième']
-modal_form = {'display': 'none', 'text': 'Empty text', 'class_id': 0}
+modal_form = {'display': 'none', 'text': 'Empty text', 'id': 0, 'method': 'profile.index'}
 
 
 @bp.route('/profile')
@@ -27,7 +27,7 @@ def index():
     classes = []
     for c in cls:
         classe = {'id': c['id'], 'classname': c['classname'], 'level': niveaux[c['level']]}
-        els = db.execute('SELECT * FROM students WHERE class_id = ?', (c['id'],)).fetchall()
+        els = db.execute('SELECT * FROM students WHERE class_id = ? ORDER BY lastname ASC', (c['id'],)).fetchall()
         classe['eleves'] = els
         classes.append(classe)
     return render_template('profile/teacher.html', teacher=teacher, classes=classes, modal=modal_form)
@@ -152,41 +152,56 @@ def editStudent(student_id):
     return render_template('profile/classroom_update.html', eleve=student, classe=classe, title="Mise à jour élève")
 
 
-@bp.route('/<int:student_id>/deleteStudent', methods=('GET', 'POST'))
+@bp.route('/<int:action_id>/deleteStudent', methods=('GET', 'POST'))
 @login_required
-def deleteStudent(student_id):
-    if request.method == 'POST':
-        db = get_db()
-        db.execute('DELETE FROM students WHERE id = ?', (student_id,))
-        db.commit()
-        return redirect(url_for('profile.index'))
-
-    topic = {'title': 'Retirer l\'élève:'}
-    db = get_db()
-    eleve = db.execute(
-        'SELECT * FROM students'
-        ' WHERE id = ?', (student_id,)
-    ).fetchone()
-    topic['object'] = eleve['firstname'] + ' ' + eleve['lastname']
-    topic['id'] = student_id
-    return render_template('profile/delete.html', topic=topic)
-
-
-@bp.route('/<int:class_id>/deleteClassroom', methods=('GET', 'POST'))
-@login_required
-def deleteClassroom(class_id):
+def deleteStudent(action_id):
     global modal_form
 
+    student_id = action_id
+    if 'none' == modal_form['display']:
+        db = get_db()
+        eleve = db.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
+        modal_form['display'] = 'block'
+        modal_form['method'] = 'profile.deleteStudent'
+        modal_form['text'] = 'Retirer l\'élève ' + eleve['firstname'] + ' ' + eleve['lastname'] + ' ?'
+        modal_form['id'] = student_id
+    else:
+        modal_form['display'] = 'none'
+        modal_form['text'] = 'Texte vide'
+        modal_form['id'] = 0
+
+        if request.args.__contains__('action'):
+            action = request.args['action']
+            if action == 'yes':
+                db = get_db()
+                db.execute('DELETE FROM students WHERE id = ?', (student_id,))
+                db.commit()
+                current_app.logger.info("Elève %d supprimé.", student_id)
+            elif action == 'no':
+                current_app.logger.info("Elève %d non supprimé.", student_id)
+            else:
+                flash("Erreur interne")
+
+    return redirect(url_for('profile.index'))
+
+
+@bp.route('/<int:action_id>/deleteClassroom', methods=('GET', 'POST'))
+@login_required
+def deleteClassroom(action_id):
+    global modal_form
+
+    class_id = action_id
     if 'none' == modal_form['display']:
         db = get_db()
         classe = db.execute('SELECT * FROM classes WHERE id = ?', (class_id,)).fetchone()
         modal_form['display'] = 'block'
+        modal_form['method'] = 'profile.deleteClassroom'
         modal_form['text'] = 'Supprimer la classe ' + classe['classname'] + ' ?'
-        modal_form['class_id'] = class_id
+        modal_form['id'] = class_id
     else:
         modal_form['display'] = 'none'
         modal_form['text'] = 'Texte vide'
-        modal_form['class_id'] = 0
+        modal_form['id'] = 0
 
         if request.args.__contains__('action'):
             action = request.args['action']
@@ -198,7 +213,7 @@ def deleteClassroom(class_id):
                 db.commit()
                 current_app.logger.info("Classe %d supprimée.", class_id)
             elif action == 'no':
-                current_app.logger.info("Classe %d non supprimée.",class_id)
+                current_app.logger.info("Classe %d non supprimée.", class_id)
             else:
                 flash("Erreur interne")
 

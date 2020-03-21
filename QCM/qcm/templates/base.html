@@ -1,6 +1,40 @@
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - QCM</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<head>
+    <title>{% block title %}{% endblock %} - QCM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+    </style>
+</head>
+
 <nav>
   <h1>QCM</h1>
   {% if g.user %}
@@ -8,12 +42,25 @@
   {% endif %}
   <ul>
     {% if g.user %}
-      <li><a href="{{ url_for('blog.index') }}"><img src="static/home_m.png"/></a></li>
-      <li><a href="{{ url_for('profile.index') }}"><img src="static/settings_m.png"/></a></li>
-      <li><a href="{{ url_for('auth.logout') }}"><img src="static/logout_m.png"/></a></li>
+      <li class="tooltip">
+          <a href="{{ url_for('blog.index') }}"><img src="static/home_m.png"/></a>
+          <span class="tooltiptext">Accueil: vue d'ensemble de vos évaluations</span>
+      </li>
+      <li class="tooltip">
+          <a href="{{ url_for('profile.index') }}"><img src="static/settings_m.png"/></a>
+          <span class="tooltiptext">Paramètres: définition des classes</span>
+      </li>
+      <li class="tooltip">
+          <a href="{{ url_for('auth.logout') }}"><img src="static/logout_m.png"/></a>
+          <span class="tooltiptext">Quitter: quitte l'application Math QCM</span>
+      </li>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Inscription</a></li>
-      <li><a href="{{ url_for('auth.login') }}">Connexion</a></li>
+      <li>
+          <a href="{{ url_for('auth.register') }}">Inscription</a>
+      </li>
+      <li>
+          <a href="{{ url_for('auth.login') }}">Connexion</a>
+      </li>
     {% endif %}
   </ul>
 </nav>

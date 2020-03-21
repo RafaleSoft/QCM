@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
-
+{% block title %}Paramètres{% endblock %}
 {% block header %}
-<h1>{% block title %}Profil professeur{% endblock %}</h1>
+<h1>Profil professeur</h1>
 {% endblock %}
 
 {% block profile %}
 
 <style>
-body {font-family: Arial, Helvetica, sans-serif;}
-
 /* The Modal (background) */
 .modal {
   display: {{ modal['display'] }};   /*display: none; Hidden by default */
@@ -54,8 +52,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   <div class="modal-content">
     <p>{{ modal['text'] }}</p>
     <p>
-        <a class="modal-action" href="{{ url_for('profile.deleteClassroom', class_id=modal['class_id'], action='yes') }}">Yes</a>
-        <a class="modal-action" href="{{ url_for('profile.deleteClassroom', class_id=modal['class_id'], action='no') }}">No</a>
+        <a class="modal-action" href="{{ url_for(modal['method'], action_id=modal['id'], action='yes') }}">Yes</a>
+        <a class="modal-action" href="{{ url_for(modal['method'], action_id=modal['id'], action='no') }}">No</a>
     </p>
   </div>
 </div>
@@ -91,17 +89,38 @@ body {font-family: Arial, Helvetica, sans-serif;}
                 <table>
                 <tr>
                     <td><h1>{{ c['classname'] }} - {{ c['level'] }}</h1></td>
-                    <td><a class="action" href="{{ url_for('profile.classroomUpdate', class_id=c['id']) }}"><img src="static/plus_m.png"/></a></td>
-                    <td><a class="action" href="{{ url_for('profile.deleteClassroom', class_id=c['id']) }}"><img src="static/garbage_m.png"/></a></td>
-                    <td><a class="action" href="{{ url_for('profile.loadClassroom', class_id=c['id']) }}"><img src="static/open-file_m.png"/></a></td>
+                    <td class="tooltip">
+                        <a class="action" href="{{ url_for('profile.classroomUpdate', class_id=c['id']) }}">
+                            <img src="static/plus_m.png"/>
+                        </a>
+                        <span class="tooltiptext">Ajouter un élève à la classe</span>
+                    </td>
+                    <td class="tooltip">
+                        <a class="action" href="{{ url_for('profile.deleteClassroom', action_id=c['id']) }}">
+                            <img src="static/garbage_m.png"/>
+                        </a>
+                        <span class="tooltiptext">Supprimer la classe</span>
+                    </td>
+                    <td class="tooltip">
+                        <a class="action" href="{{ url_for('profile.loadClassroom', class_id=c['id']) }}">
+                            <img src="static/open-file_m.png"/>
+                        </a>
+                        <span class="tooltiptext">Charger une liste de classe au format .csv</span>
+                    </td>
                 </tr>
                 </table>
             </header>
             {% for e in c['eleves'] %}
                 <p>
-                    <a class="action" href="{{ url_for('profile.deleteStudent', student_id=e['id']) }}"><img src="static/moins_xs.png"/></a>
-                    <a class="action" href="{{ url_for('profile.editStudent', student_id=e['id']) }}"><img src="static/pencil_xs.png"/></a>
-                    {{ e['firstname'] }} {{ e['lastname']}}
+                    <a class="tooltip" href="{{ url_for('profile.deleteStudent', action_id=e['id']) }}">
+                        <img src="static/moins_xs.png"/>
+                        <span class="tooltiptext">Supprimer l'élève de la classe</span>
+                    </a>
+                    <a class="tooltip" href="{{ url_for('profile.editStudent', student_id=e['id']) }}">
+                        <img src="static/pencil_xs.png"/>
+                        <span class="tooltiptext">Mettre à jour les données de l'élève</span>
+                    </a>
+                    {{ e['lastname']}} {{ e['firstname'] }}
                 </p>
             {% endfor %}
         </div>

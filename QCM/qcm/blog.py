@@ -153,8 +153,10 @@ def downloadevaluation(class_id=0, path=None):
 
     fp = os.path.join(current_app.instance_path, 'users', str(class_id), path)
 
-    print('path:', fp)
-    return send_file(fp)
+    if os.path.exists(fp):
+        return send_file(fp)
+    else:
+        abort(404)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

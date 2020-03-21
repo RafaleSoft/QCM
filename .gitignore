@@ -99,6 +99,7 @@ ipch/
 Raptor/
 *.VC.db
 *.VC.opendb
+*.pdb
 
 # Spyder project settings
 .spyderproject
