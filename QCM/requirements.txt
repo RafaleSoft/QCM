@@ -2,7 +2,7 @@ antiorm==1.2.1
 bcrypt==3.2.0
 cffi==1.14.3
 click==7.1.2
-cryptography==3.2.1
+cryptography==3.3.2
 db==0.1.1
 Flask==1.1.2
 itsdangerous==2.0.0a1
